@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "141679054231",
+    "project_id": "p-m-s-34c04",
+    "storage_bucket": "p-m-s-34c04.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141679054231:android:ed488456ba013e903888d2",
+        "android_client_info": {
+          "package_name": "com.example.pms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaEU9mN50L52QGqhtZ1x81ZA3lDBafTuI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
