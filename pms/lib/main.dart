@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pms/views/SignUp/splashScreen.dart';
+import 'package:pms/views/adminDashboard.dart';
 
 import 'firebase_options.dart';
 
