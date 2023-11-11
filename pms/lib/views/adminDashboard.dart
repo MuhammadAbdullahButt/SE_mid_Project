@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pms/views/adminFunctionality/projectDashboard.dart';
+import 'package:pms/views/adminFunctionality/taskCreation.dart';
+
+import 'adminFunctionality/createTeam.dart';
+import 'adminFunctionality/projectCreation.dart';
+import 'adminFunctionality/taskDashboard.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
@@ -57,22 +63,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text(' Assign Project '),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.workspace_premium),
-              title: const Text(' Go Premium '),
+              leading: const Icon(Icons.create),
+              title: const Text(' Create Project '),
               onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               leading: const Icon(Icons.video_label),
-              title: const Text(' Saved Videos '),
+              title: const Text(' Create Task '),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.workspace_premium),
+              title: const Text(' Assign Task '),
               onTap: () {
                 Navigator.pop(context);
               },
@@ -123,67 +129,74 @@ class _AdminDashboardState extends State<AdminDashboard> {
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Container(
-                            width: 320,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              color: Colors.black87,
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            child: const Stack(
-                              children: [
-                                Align(
-                                    alignment: Alignment.topLeft,
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return const ProjectDashboard();
+                            }));
+                          },
+                          child: Container(
+                              width: 320,
+                              height: 130,
+                              decoration: BoxDecoration(
+                                color: Colors.black87,
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: const Stack(
+                                children: [
+                                  Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 12.0, top: 20),
+                                        child: Text(
+                                          'Sudoku Game',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 20,
+                                              fontFamily: 'playFair'),
+                                        ),
+                                      )),
+                                  Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 12.0, top: 50),
+                                        child: Text(
+                                          'Cost: 1000',
+                                          style: TextStyle(
+                                              color: Colors.greenAccent,
+                                              fontSize: 14,
+                                              fontFamily: 'playFair'),
+                                        ),
+                                      )),
+                                  Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 12.0, top: 85),
+                                        child: Text(
+                                          'Status: Assigned',
+                                          style: TextStyle(
+                                              color: Colors.redAccent,
+                                              fontSize: 14,
+                                              fontFamily: 'playFair'),
+                                        ),
+                                      )),
+                                  Align(
+                                    alignment: Alignment.bottomRight,
                                     child: Padding(
                                       padding:
-                                          EdgeInsets.only(left: 12.0, top: 20),
-                                      child: Text(
-                                        'Sudoku Game',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontFamily: 'playFair'),
+                                          EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                      child: Icon(
+                                        Icons.open_in_new,
+                                        color: Colors.white,
                                       ),
-                                    )),
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 12.0, top: 50),
-                                      child: Text(
-                                        'Cost: 1000',
-                                        style: TextStyle(
-                                            color: Colors.greenAccent,
-                                            fontSize: 14,
-                                            fontFamily: 'playFair'),
-                                      ),
-                                    )),
-                                Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(left: 12.0, top: 85),
-                                      child: Text(
-                                        'Status: Assigned',
-                                        style: TextStyle(
-                                            color: Colors.redAccent,
-                                            fontSize: 14,
-                                            fontFamily: 'playFair'),
-                                      ),
-                                    )),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Padding(
-                                    padding:
-                                        EdgeInsets.only(bottom: 8.0, right: 8.0),
-                                    child: Icon(
-                                      Icons.open_in_new,
-                                      color: Colors.white,
                                     ),
                                   ),
-                                ),
-                              ],
-                            )),
+                                ],
+                              )),
+                        ),
                       );
                     },
                   ),
@@ -194,7 +207,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         child: FloatingActionButton(
                           backgroundColor: Colors.blue.shade200,
                           child: Icon(Icons.add),
-                          onPressed: (){}),
+                          onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context){
+                              return const ProjectCreation();
+                            }
+                            ));
+                          }),
                       ))
                   ]
                 ),
@@ -207,67 +225,74 @@ class _AdminDashboardState extends State<AdminDashboard> {
                         itemBuilder: (context, index) {
                           return Padding(
                             padding: const EdgeInsets.only(top: 8.0),
-                            child: Container(
-                                width: 320,
-                                height: 130,
-                                decoration: BoxDecoration(
-                                  color: Colors.black87,
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: const Stack(
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.topLeft,
+                            child: GestureDetector(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context){
+                                  return const TaskDashboard();
+                                }));
+                              },
+                              child: Container(
+                                  width: 320,
+                                  height: 130,
+                                  decoration: BoxDecoration(
+                                    color: Colors.black87,
+                                    borderRadius: BorderRadius.circular(25),
+                                  ),
+                                  child: const Stack(
+                                    children: [
+                                      Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding:
+                                            EdgeInsets.only(left: 12.0, top: 20),
+                                            child: Text(
+                                              'Sudoku Game',
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 20,
+                                                  fontFamily: 'playFair'),
+                                            ),
+                                          )),
+                                      Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding:
+                                            EdgeInsets.only(left: 12.0, top: 50),
+                                            child: Text(
+                                              'Cost: 1000',
+                                              style: TextStyle(
+                                                  color: Colors.greenAccent,
+                                                  fontSize: 14,
+                                                  fontFamily: 'playFair'),
+                                            ),
+                                          )),
+                                      Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Padding(
+                                            padding:
+                                            EdgeInsets.only(left: 12.0, top: 85),
+                                            child: Text(
+                                              'Status: Assigned',
+                                              style: TextStyle(
+                                                  color: Colors.redAccent,
+                                                  fontSize: 14,
+                                                  fontFamily: 'playFair'),
+                                            ),
+                                          )),
+                                      Align(
+                                        alignment: Alignment.bottomRight,
                                         child: Padding(
                                           padding:
-                                          EdgeInsets.only(left: 12.0, top: 20),
-                                          child: Text(
-                                            'Sudoku Game',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontFamily: 'playFair'),
+                                          EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                          child: Icon(
+                                            Icons.open_in_new,
+                                            color: Colors.white,
                                           ),
-                                        )),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 12.0, top: 50),
-                                          child: Text(
-                                            'Cost: 1000',
-                                            style: TextStyle(
-                                                color: Colors.greenAccent,
-                                                fontSize: 14,
-                                                fontFamily: 'playFair'),
-                                          ),
-                                        )),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 12.0, top: 85),
-                                          child: Text(
-                                            'Status: Assigned',
-                                            style: TextStyle(
-                                                color: Colors.redAccent,
-                                                fontSize: 14,
-                                                fontFamily: 'playFair'),
-                                          ),
-                                        )),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(bottom: 8.0, right: 8.0),
-                                        child: Icon(
-                                          Icons.open_in_new,
-                                          color: Colors.white,
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                )),
+                                    ],
+                                  )),
+                            ),
                           );
                         },
                       ),
@@ -278,7 +303,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
                             child: FloatingActionButton(
                                 backgroundColor: Colors.blue.shade200,
                                 child: Icon(Icons.add),
-                                onPressed: (){}),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return const TaskCreation();
+                                  }
+                                  ));
+                                }),
                           ))
                     ]
                 ),
@@ -362,7 +392,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
                             child: FloatingActionButton(
                                 backgroundColor: Colors.blue.shade200,
                                 child: Icon(Icons.add),
-                                onPressed: (){}),
+                                onPressed: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return const CreateTeam();
+                                  }
+                                  ));
+                                }),
                           ))
                     ]
                 ),
