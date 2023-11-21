@@ -4,6 +4,7 @@ const db = require('./utils/db')
 const projectRouter = require('./routes/ProjectRouter')
 const taskRouter = require('./routes/TaskRouter')
 const teamRouter = require('./routes/TeamRouter')
+const signUpRouter = require('./routes/SignUpRouter')
 
 const app  = express()
 app.use(bodyParser.json());
@@ -16,6 +17,7 @@ app.use(
 app.use('/project',projectRouter);
 app.use('/task',taskRouter);
 app.use('/team',teamRouter);
+app.use('/signup',signUpRouter);
 
 
 app.listen(3005,()=>{

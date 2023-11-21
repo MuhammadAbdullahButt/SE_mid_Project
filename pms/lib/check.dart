@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:pms/views/LoginSc.dart';
 import 'package:pms/views/adminFunctionality/projectDashboard.dart';
 import 'dart:convert';
 
@@ -45,7 +46,7 @@ class _ProjectListScreenState extends State<ProjectListScreen> {
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
                             builder: (context) {
-                              return const ProjectDashboard();
+                              return const LoginSc();
                             }));
                       },
                       child: Container(

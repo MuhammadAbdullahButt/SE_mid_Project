@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const memberSchema = mongoose.Schema({
+const PMSchema = mongoose.Schema({
     user_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -8,9 +8,8 @@ const memberSchema = mongoose.Schema({
     name: String,
     DOB: String,
     CNIC: String,
-    role: String,
     description: String,
     skills: String
 },{timestamps: true});
 
-module.exports = mongoose.model('Member',memberSchema)
+module.exports = mongoose.model('PM',PMSchema)

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pms/controllers/TaskController.dart';
 import 'package:pms/views/adminDashboard.dart';
 
 class TaskCreation extends StatefulWidget {
@@ -9,6 +10,16 @@ class TaskCreation extends StatefulWidget {
 }
 
 class _TaskCreationState extends State<TaskCreation> {
+  Map task = {
+    "title":"",
+    "priority":"",
+    "description":"",
+    "status":"created",
+    "deadline":"",
+  };
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descController = TextEditingController();
   late String valuechoose;
   DateTime date = DateTime.now();
   List listItem = ['High', 'Medium', 'Low'];
@@ -144,6 +155,11 @@ class _TaskCreationState extends State<TaskCreation> {
                       child:
                       const Icon(Icons.arrow_forward, color: Colors.white),
                       onPressed: () {
+                        task['title'] = nameController.text;
+                        task['description'] = descController.text;
+                        task['priority'] = valuechoose;
+                        task['deadline'] = date;
+                        TaskController.addTask(task);
                         showDialog(context: context, builder: (context){
                           return AlertDialog(
                             title: const Text('Task Created Successfully'),

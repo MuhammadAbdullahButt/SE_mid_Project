@@ -1,13 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pms/views/adminFunctionality/taskCreation.dart';
 
 class ProjectDashboard extends StatefulWidget {
-  const ProjectDashboard({super.key});
+
+  final Map project;
+  const ProjectDashboard({
+    Key? key,
+    required this.project,
+  }) : super(key: key);
   @override
-  State<ProjectDashboard> createState() => _ProjectDashboardState();
+  State<ProjectDashboard> createState() => _ProjectDashboardState(project);
 }
 
 class _ProjectDashboardState extends State<ProjectDashboard> {
+  final Map project;
+  _ProjectDashboardState(this.project);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +31,7 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        title: const Center(child: Text('Sudoku Game',style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
+        title: Center(child: Text(project['name'],style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
       ),
 
       body: Container(
@@ -31,11 +40,24 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
         child: Column(
           children: [
             const SizedBox(height: 10,),
-            const Text('Deadline: 10-11-2023',style: TextStyle(color: Colors.red,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Deadline: '+ project['deadLine'],style: TextStyle(color: Colors.red,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
             const Text('Est Cost: 500',style: TextStyle(color: Colors.green,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
-            const Text('Status: In progress',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Status: '+ project['status'],style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
+            const SizedBox(height: 10,),
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return const TaskCreation();
+                  }));
+
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black87,
+                ),
+                child: const Text('Create Task',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),)
+            ),
             Expanded(
               child: DefaultTabController(
                 length: 2,

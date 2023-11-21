@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pms/views/LoginSc.dart';
 import 'package:pms/views/adminFunctionality/projectDashboard.dart';
 import 'package:pms/views/adminFunctionality/taskCreation.dart';
 import '../controllers/ProjectController.dart';
@@ -155,7 +156,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                         onTap: () {
                                           Navigator.push(context, MaterialPageRoute(
                                               builder: (context) {
-                                                return const ProjectDashboard();
+                                                return ProjectDashboard(project: project);
                                               }));
                                         },
                                         child: Container(
@@ -275,7 +276,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return const ProjectDashboard();
+                                                  return ProjectDashboard(project:projectList[index]);
                                                 }));
                                           },
                                           child: Container(
@@ -345,20 +346,6 @@ class _AdminDashboardState extends State<AdminDashboard> {
                               }
                             }),
                       ),
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: FloatingActionButton(
-                                backgroundColor: Colors.blue.shade200,
-                                child: Icon(Icons.add),
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context){
-                                    return const TaskCreation();
-                                  }
-                                  ));
-                                }),
-                          ))
                     ]
                 ),
               ),
@@ -395,7 +382,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return const ProjectDashboard();
+                                                  return const LoginSc();
                                                 }));
                                           },
                                           child: Container(
