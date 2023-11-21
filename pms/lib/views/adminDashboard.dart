@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pms/views/adminFunctionality/projectDashboard.dart';
 import 'package:pms/views/adminFunctionality/taskCreation.dart';
-
+import '../controllers/ProjectController.dart';
 import 'adminFunctionality/createTeam.dart';
 import 'adminFunctionality/projectCreation.dart';
 import 'adminFunctionality/taskDashboard.dart';
@@ -26,7 +26,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
             bottom: Radius.circular(30),
           ),
         ),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Center(child: Text('PMS',style: TextStyle(color: Colors.white,fontFamily: 'playFairItalic'),)),
         actions: [
           Container(
@@ -104,6 +104,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
+            automaticallyImplyLeading: false,
             backgroundColor: Colors.white24,
             bottom: const TabBar(
               tabs: [
@@ -124,82 +125,106 @@ class _AdminDashboardState extends State<AdminDashboard> {
               Container(
                 child: Stack(
                   children: [ 
-                    ListView.builder(
-                    itemCount: 5,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context){
-                              return const ProjectDashboard();
-                            }));
-                          },
-                          child: Container(
-                              width: 320,
-                              height: 130,
-                              decoration: BoxDecoration(
-                                color: Colors.black87,
-                                borderRadius: BorderRadius.circular(25),
-                              ),
-                              child: const Stack(
-                                children: [
-                                  Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 12.0, top: 20),
-                                        child: Text(
-                                          'Sudoku Game',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontFamily: 'playFair'),
-                                        ),
-                                      )),
-                                  Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 12.0, top: 50),
-                                        child: Text(
-                                          'Cost: 1000',
-                                          style: TextStyle(
-                                              color: Colors.greenAccent,
-                                              fontSize: 14,
-                                              fontFamily: 'playFair'),
-                                        ),
-                                      )),
-                                  Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 12.0, top: 85),
-                                        child: Text(
-                                          'Status: Assigned',
-                                          style: TextStyle(
-                                              color: Colors.redAccent,
-                                              fontSize: 14,
-                                              fontFamily: 'playFair'),
-                                        ),
-                                      )),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Padding(
-                                      padding:
-                                          EdgeInsets.only(bottom: 8.0, right: 8.0),
-                                      child: Icon(
-                                        Icons.open_in_new,
-                                        color: Colors.white,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 6.0,right: 6.0),
+                      child: FutureBuilder<List<Map<String, dynamic>>>(
+                          future: ProjectController.getProject(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Center(
+                                child: Text('Error: ${snapshot.error}'),
+                              );
+                            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              return const Center(
+                                child: Text('No projects available.'),
+                              );
+                            }
+                            else {
+                              List<Map<String, dynamic>> projectList = snapshot.data!;
+                              return ListView.builder(
+                                  itemCount: projectList.length,
+                                  itemBuilder: (context, index) {
+                                    Map<String, dynamic> project = projectList[index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(top: 3),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(
+                                              builder: (context) {
+                                                return const ProjectDashboard();
+                                              }));
+                                        },
+                                        child: Container(
+                                            width: 320,
+                                            height: 130,
+                                            decoration: BoxDecoration(
+                                              color: Colors.black87,
+                                              borderRadius: BorderRadius.circular(25),
+                                            ),
+                                            child: Stack(
+                                              children: [
+                                                Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Padding(
+                                                      padding:
+                                                      EdgeInsets.only(left: 12.0, top: 20),
+                                                      child: Text(
+                                                        project['name'],
+                                                        style: const TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                            fontFamily: 'playFair'),
+                                                      ),
+                                                    )),
+                                                Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Padding(
+                                                      padding:
+                                                      EdgeInsets.only(left: 12.0, top: 50),
+                                                      child: Text( 'type: '+
+                                                          project['type'],
+                                                        style: const TextStyle(
+                                                            color: Colors.greenAccent,
+                                                            fontSize: 14,
+                                                            fontFamily: 'playFair'),
+                                                      ),
+                                                    )),
+                                                Align(
+                                                    alignment: Alignment.topLeft,
+                                                    child: Padding(
+                                                      padding:
+                                                      EdgeInsets.only(left: 12.0, top: 85),
+                                                      child: Text(
+                                                        'Status: '+ project['status'],
+                                                        style: TextStyle(
+                                                            color: Colors.redAccent,
+                                                            fontSize: 14,
+                                                            fontFamily: 'playFair'),
+                                                      ),
+                                                    )),
+                                                Align(
+                                                  alignment: Alignment.bottomRight,
+                                                  child: Padding(
+                                                    padding:
+                                                    EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                                    child: Icon(
+                                                      Icons.open_in_new,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            )),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      );
-                    },
-                  ),
+                                    );
+                                  });
+                            }
+                          })
+                    ),
                     Align(
                       alignment: Alignment.bottomRight,
                       child: Padding(
@@ -220,81 +245,105 @@ class _AdminDashboardState extends State<AdminDashboard> {
               Container(
                 child: Stack(
                     children: [
-                      ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: GestureDetector(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (context){
-                                  return const TaskDashboard();
-                                }));
-                              },
-                              child: Container(
-                                  width: 320,
-                                  height: 130,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black87,
-                                    borderRadius: BorderRadius.circular(25),
-                                  ),
-                                  child: const Stack(
-                                    children: [
-                                      Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 12.0, top: 20),
-                                            child: Text(
-                                              'Sudoku Game',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 20,
-                                                  fontFamily: 'playFair'),
-                                            ),
-                                          )),
-                                      Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 12.0, top: 50),
-                                            child: Text(
-                                              'Cost: 1000',
-                                              style: TextStyle(
-                                                  color: Colors.greenAccent,
-                                                  fontSize: 14,
-                                                  fontFamily: 'playFair'),
-                                            ),
-                                          )),
-                                      Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Padding(
-                                            padding:
-                                            EdgeInsets.only(left: 12.0, top: 85),
-                                            child: Text(
-                                              'Status: Assigned',
-                                              style: TextStyle(
-                                                  color: Colors.redAccent,
-                                                  fontSize: 14,
-                                                  fontFamily: 'playFair'),
-                                            ),
-                                          )),
-                                      Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(bottom: 8.0, right: 8.0),
-                                          child: Icon(
-                                            Icons.open_in_new,
-                                            color: Colors.white,
-                                          ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6.0,right: 6.0),
+                        child: FutureBuilder<List<Map<String, dynamic>>>(
+                            future: ProjectController.getProject(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                );
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(
+                                  child: Text('No projects available.'),
+                                );
+                              }
+                              else {
+                                List<Map<String, dynamic>> projectList = snapshot.data!;
+                                return ListView.builder(
+                                    itemCount: projectList.length,
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> project = projectList[index];
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 3),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) {
+                                                  return const ProjectDashboard();
+                                                }));
+                                          },
+                                          child: Container(
+                                              width: 320,
+                                              height: 130,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black87,
+                                                borderRadius: BorderRadius.circular(25),
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 20),
+                                                        child: Text(
+                                                          project['name'],
+                                                          style: const TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 50),
+                                                        child: Text( 'type: '+
+                                                            project['type'],
+                                                          style: const TextStyle(
+                                                              color: Colors.greenAccent,
+                                                              fontSize: 14,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 85),
+                                                        child: Text(
+                                                          'Status: '+ project['status'],
+                                                          style: TextStyle(
+                                                              color: Colors.redAccent,
+                                                              fontSize: 14,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                    alignment: Alignment.bottomRight,
+                                                    child: Padding(
+                                                      padding:
+                                                      EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                                      child: Icon(
+                                                        Icons.open_in_new,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
                                         ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          );
-                        },
+                                      );
+                                    });
+                              }
+                            }),
                       ),
                       Align(
                           alignment: Alignment.bottomRight,
@@ -316,74 +365,105 @@ class _AdminDashboardState extends State<AdminDashboard> {
               Container(
                 child: Stack(
                     children: [
-                      ListView.builder(
-                        itemCount: 5,
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: Container(
-                                width: 320,
-                                height: 130,
-                                decoration: BoxDecoration(
-                                  color: Colors.black87,
-                                  borderRadius: BorderRadius.circular(25),
-                                ),
-                                child: const Stack(
-                                  children: [
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 12.0, top: 20),
-                                          child: Text(
-                                            'Sudoku Game',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontFamily: 'playFair'),
-                                          ),
-                                        )),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 12.0, top: 50),
-                                          child: Text(
-                                            'Cost: 1000',
-                                            style: TextStyle(
-                                                color: Colors.greenAccent,
-                                                fontSize: 14,
-                                                fontFamily: 'playFair'),
-                                          ),
-                                        )),
-                                    Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 12.0, top: 85),
-                                          child: Text(
-                                            'Status: Assigned',
-                                            style: TextStyle(
-                                                color: Colors.redAccent,
-                                                fontSize: 14,
-                                                fontFamily: 'playFair'),
-                                          ),
-                                        )),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Padding(
-                                        padding:
-                                        EdgeInsets.only(bottom: 8.0, right: 8.0),
-                                        child: Icon(
-                                          Icons.open_in_new,
-                                          color: Colors.white,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 6.0,right: 6.0),
+                        child: FutureBuilder<List<Map<String, dynamic>>>(
+                            future: ProjectController.getProject(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                );
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Center(
+                                  child: Text('No projects available.'),
+                                );
+                              }
+                              else {
+                                List<Map<String, dynamic>> projectList = snapshot.data!;
+                                return ListView.builder(
+                                    itemCount: projectList.length,
+                                    itemBuilder: (context, index) {
+                                      Map<String, dynamic> project = projectList[index];
+                                      return Padding(
+                                        padding: const EdgeInsets.only(top: 3),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) {
+                                                  return const ProjectDashboard();
+                                                }));
+                                          },
+                                          child: Container(
+                                              width: 320,
+                                              height: 130,
+                                              decoration: BoxDecoration(
+                                                color: Colors.black87,
+                                                borderRadius: BorderRadius.circular(25),
+                                              ),
+                                              child: Stack(
+                                                children: [
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 20),
+                                                        child: Text(
+                                                          project['name'],
+                                                          style: const TextStyle(
+                                                              color: Colors.white,
+                                                              fontSize: 20,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 50),
+                                                        child: Text( 'type: '+
+                                                            project['type'],
+                                                          style: const TextStyle(
+                                                              color: Colors.greenAccent,
+                                                              fontSize: 14,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                      alignment: Alignment.topLeft,
+                                                      child: Padding(
+                                                        padding:
+                                                        EdgeInsets.only(left: 12.0, top: 85),
+                                                        child: Text(
+                                                          'Status: '+ project['status'],
+                                                          style: TextStyle(
+                                                              color: Colors.redAccent,
+                                                              fontSize: 14,
+                                                              fontFamily: 'playFair'),
+                                                        ),
+                                                      )),
+                                                  Align(
+                                                    alignment: Alignment.bottomRight,
+                                                    child: Padding(
+                                                      padding:
+                                                      EdgeInsets.only(bottom: 8.0, right: 8.0),
+                                                      child: Icon(
+                                                        Icons.open_in_new,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
                                         ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                          );
-                        },
+                                      );
+                                    });
+                              }
+                            }),
                       ),
                       Align(
                           alignment: Alignment.bottomRight,

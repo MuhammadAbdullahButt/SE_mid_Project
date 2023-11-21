@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pms/views/SignUp/personalInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../controllers/ProjectController.dart';
 import 'adminDashboard.dart';
 
 
@@ -61,7 +63,6 @@ class _LoginScState extends State<LoginSc> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 25,),
               Container(
                 width: 120,
@@ -71,15 +72,13 @@ class _LoginScState extends State<LoginSc> {
                       backgroundColor: Colors.black87,
                     ),
                     onPressed: () {
+                      ProjectController.getProject();
                       CollectionReference collref = FirebaseFirestore.instance.collection('user');
                       collref.add({
                         'username':'waseem',
                         'password':'123'
                       });
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return AdminDashboard();
-                      }
-                      ));
+                      Navigator.push(context, PageTransition(child: AdminDashboard(), type: PageTransitionType.fade));
                     },
                     child: const Text("Login",style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'playFair'),)
 

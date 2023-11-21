@@ -2,13 +2,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pms/views/adminDashboard.dart';
 
+import '../../controllers/ProjectController.dart';
+
 class ProjectCrScreenTwo extends StatefulWidget {
-  const ProjectCrScreenTwo({super.key});
+  final String name;
+  final String type;
+  final DateTime deadline;
+  const ProjectCrScreenTwo({
+    Key? key,
+    required this.name,
+    required this.type,
+    required this.deadline,
+  }) : super(key: key);
   @override
-  State<ProjectCrScreenTwo> createState() => _ProjectCrScreenTwoState();
+  State<ProjectCrScreenTwo> createState() => _ProjectCrScreenTwoState(name,type,deadline);
 }
 
 class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
+  String name;
+  String type;
+  DateTime deadline;
+  _ProjectCrScreenTwoState(this.name, this.type, this.deadline);
+  TextEditingController linkController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  Map project = {
+    "name":"",
+    "type":"",
+    "description":"",
+    "cost":"1000",
+    "status":"created",
+    "repoLink":"",
+    "deadLine":"",
+  };
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,6 +62,7 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                   height: 60,
                 ),
                 TextField(
+                  controller: linkController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -50,6 +77,7 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                 Container(
                   height: 80,
                     child: TextField(
+                      controller: descriptionController,
                       textInputAction: TextInputAction.newline,
                       expands: true,
                       maxLines: null,
@@ -69,27 +97,33 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                 Container(
                   height: 50,
                   width: 130,
-                  margin: EdgeInsets.only(left: 0, top: 50),
+                  margin: const EdgeInsets.only(left: 0, top: 50),
                   child: ElevatedButton(
                     onPressed: (){
+                      project['name'] = name;
+                      project['type'] = type;
+                      project['deadLine'] = deadline.toString();
+                      project['repoLink'] = linkController.text;
+                      project['description'] = descriptionController.text;
+                      ProjectController.addProject(project);
                       showDialog(context: context, builder: (context){
                         return AlertDialog(
                           title: const Text('Project Created Successfully'),
                           actions: [
                             TextButton(onPressed: (){
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                return AdminDashboard();
+                                return const AdminDashboard();
                               }));
-                            }, child: Text('Ok')),
+                            }, child: const Text('Ok')),
                           ],
 
                         );
                       });
                     },
-                    child: Text('Create',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.black87,
-                    )
+                    ),
+                    child: const Text('Create',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),)
                   )
                 ),
               ],

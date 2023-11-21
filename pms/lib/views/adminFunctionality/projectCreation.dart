@@ -10,6 +10,7 @@ class ProjectCreation extends StatefulWidget {
 }
 
 class _ProjectCreationState extends State<ProjectCreation> {
+  TextEditingController nameController = TextEditingController();
   late String valuechoose;
   DateTime date = DateTime.now();
   List listItem = ['Web', 'Mobile', 'Desktop'];
@@ -58,6 +59,7 @@ class _ProjectCreationState extends State<ProjectCreation> {
                   height: 50,
                 ),
                 TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -126,7 +128,7 @@ class _ProjectCreationState extends State<ProjectCreation> {
                           const Icon(Icons.arrow_forward, color: Colors.white),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return const ProjectCrScreenTwo();
+                          return ProjectCrScreenTwo(name: nameController.text,type: valuechoose,deadline: date ,);
                         }
                         ));
                       },

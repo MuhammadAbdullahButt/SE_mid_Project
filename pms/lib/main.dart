@@ -4,6 +4,7 @@ import 'package:pms/views/SignUp/splashScreen.dart';
 import 'package:pms/views/adminDashboard.dart';
 import 'package:pms/views/adminFunctionality/projectCreation.dart';
 
+import 'check.dart';
 import 'firebase_options.dart';
 
 void main() async{
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Project Management Tool',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black87),
         useMaterial3: true,
       ),
       home: SplashScreen(),
