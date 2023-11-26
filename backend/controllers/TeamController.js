@@ -3,10 +3,12 @@ const Team = require('../models/Team');
 async function createTeam(req,res){
     console.log(req.body);
     try{
+        req.body.member_id = JSON.parse(req.body.member_id);
         const team = await Team.create(req.body);
         res.status(201).json(team);
     }
-    catch{
+    catch(err){
+        console.log(err.message);
         res.status(500).json({error: err.message});
     }
 }

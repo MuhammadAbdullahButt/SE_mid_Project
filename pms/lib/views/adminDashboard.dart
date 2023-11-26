@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:pms/controllers/TaskController.dart';
 import 'package:pms/views/LoginSc.dart';
 import 'package:pms/views/adminFunctionality/projectDashboard.dart';
-import 'package:pms/views/adminFunctionality/taskCreation.dart';
 import '../controllers/ProjectController.dart';
+import '../controllers/TeamController.dart';
 import 'adminFunctionality/createTeam.dart';
 import 'adminFunctionality/projectCreation.dart';
 import 'adminFunctionality/taskDashboard.dart';
+import 'adminFunctionality/teamDashboard.dart';
 
 class AdminDashboard extends StatefulWidget {
   const AdminDashboard({Key? key}) : super(key: key);
-
   @override
   State<AdminDashboard> createState() => _AdminDashboardState();
 }
@@ -249,7 +250,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       Padding(
                         padding: const EdgeInsets.only(left: 6.0,right: 6.0),
                         child: FutureBuilder<List<Map<String, dynamic>>>(
-                            future: ProjectController.getProject(),
+                            future: TaskController.getTasks(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
                                 return const Center(
@@ -261,22 +262,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                 );
                               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                                 return const Center(
-                                  child: Text('No projects available.'),
+                                  child: Text('No Tasks available.'),
                                 );
                               }
                               else {
-                                List<Map<String, dynamic>> projectList = snapshot.data!;
+                                List<Map<String, dynamic>> taskList = snapshot.data!;
                                 return ListView.builder(
-                                    itemCount: projectList.length,
+                                    itemCount: taskList.length,
                                     itemBuilder: (context, index) {
-                                      Map<String, dynamic> project = projectList[index];
+                                      Map<String, dynamic> task = taskList[index];
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 3),
                                         child: GestureDetector(
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return ProjectDashboard(project:projectList[index]);
+                                                  return TaskDashboard(task: task,);
                                                 }));
                                           },
                                           child: Container(
@@ -294,7 +295,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 20),
                                                         child: Text(
-                                                          project['name'],
+                                                          task['title'],
                                                           style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 20,
@@ -306,8 +307,8 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                                       child: Padding(
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 50),
-                                                        child: Text( 'type: '+
-                                                            project['type'],
+                                                        child: Text( 'priority: '+
+                                                            task['priority'],
                                                           style: const TextStyle(
                                                               color: Colors.greenAccent,
                                                               fontSize: 14,
@@ -320,14 +321,14 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 85),
                                                         child: Text(
-                                                          'Status: '+ project['status'],
-                                                          style: TextStyle(
+                                                          'Status: '+ task['status'],
+                                                          style: const TextStyle(
                                                               color: Colors.redAccent,
                                                               fontSize: 14,
                                                               fontFamily: 'playFair'),
                                                         ),
                                                       )),
-                                                  Align(
+                                                  const Align(
                                                     alignment: Alignment.bottomRight,
                                                     child: Padding(
                                                       padding:
@@ -355,7 +356,7 @@ class _AdminDashboardState extends State<AdminDashboard> {
                       Padding(
                         padding: const EdgeInsets.only(left: 6.0,right: 6.0),
                         child: FutureBuilder<List<Map<String, dynamic>>>(
-                            future: ProjectController.getProject(),
+                            future: TeamController.getTeams(),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState == ConnectionState.waiting) {
                                 return const Center(
@@ -367,22 +368,22 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                 );
                               } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                                 return const Center(
-                                  child: Text('No projects available.'),
+                                  child: Text('No Teams available.'),
                                 );
                               }
                               else {
-                                List<Map<String, dynamic>> projectList = snapshot.data!;
+                                List<Map<String, dynamic>> teamList = snapshot.data!;
                                 return ListView.builder(
-                                    itemCount: projectList.length,
+                                    itemCount: teamList.length,
                                     itemBuilder: (context, index) {
-                                      Map<String, dynamic> project = projectList[index];
+                                      Map<String, dynamic> team = teamList[index];
                                       return Padding(
                                         padding: const EdgeInsets.only(top: 3),
                                         child: GestureDetector(
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return const LoginSc();
+                                                  return TeamDashboard(Team: team,);
                                                 }));
                                           },
                                           child: Container(
@@ -400,40 +401,40 @@ class _AdminDashboardState extends State<AdminDashboard> {
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 20),
                                                         child: Text(
-                                                          project['name'],
+                                                          team['title'],
                                                           style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 20,
                                                               fontFamily: 'playFair'),
                                                         ),
                                                       )),
-                                                  Align(
+                                                  const Align(
                                                       alignment: Alignment.topLeft,
                                                       child: Padding(
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 50),
                                                         child: Text( 'type: '+
-                                                            project['type'],
-                                                          style: const TextStyle(
+                                                            'project',
+                                                          style: TextStyle(
                                                               color: Colors.greenAccent,
                                                               fontSize: 14,
                                                               fontFamily: 'playFair'),
                                                         ),
                                                       )),
-                                                  Align(
+                                                  const Align(
                                                       alignment: Alignment.topLeft,
                                                       child: Padding(
                                                         padding:
                                                         EdgeInsets.only(left: 12.0, top: 85),
                                                         child: Text(
-                                                          'Status: '+ project['status'],
+                                                          'Status: '+ 'status',
                                                           style: TextStyle(
                                                               color: Colors.redAccent,
                                                               fontSize: 14,
                                                               fontFamily: 'playFair'),
                                                         ),
                                                       )),
-                                                  Align(
+                                                  const Align(
                                                     alignment: Alignment.bottomRight,
                                                     child: Padding(
                                                       padding:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:pms/controllers/SignUpInController.dart';
 import 'package:pms/views/SignUp/personalInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,6 +15,8 @@ class LoginSc extends StatefulWidget {
 }
 
 class _LoginScState extends State<LoginSc> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,11 +30,11 @@ class _LoginScState extends State<LoginSc> {
               Container(
                 width: double.infinity,
                 height: 270,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: Colors.black87,
-                    borderRadius: const BorderRadius.only(bottomRight: Radius.circular(70))
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(70))
                 ),
-                child: Center(child: Image(image: AssetImage('assets/images/icon.png'), width: 140, height: 140)),
+                child: const Center(child: Image(image: AssetImage('assets/images/icon.png'), width: 140, height: 140)),
               ),
               const SizedBox(height: 35,),
               const Text("Login",style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold,fontFamily:'playFairItalic'),),
@@ -39,6 +42,7 @@ class _LoginScState extends State<LoginSc> {
               Container(
                 width: 300,
                 child: TextField(
+                  controller: usernameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -53,6 +57,7 @@ class _LoginScState extends State<LoginSc> {
               Container(
                 width: 300,
                 child: TextField(
+                  controller: passwordController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -71,13 +76,12 @@ class _LoginScState extends State<LoginSc> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black87,
                     ),
-                    onPressed: () {
-                      ProjectController.getProject();
-                      CollectionReference collref = FirebaseFirestore.instance.collection('user');
-                      collref.add({
-                        'username':'waseem',
-                        'password':'123'
-                      });
+                    onPressed: () async {
+                      Map data = {
+                        "username":usernameController.text,
+                        "password":passwordController.text
+                      };
+                      Map currentUserData = await SignUpInController.Login(data);
                       Navigator.push(context, PageTransition(child: AdminDashboard(), type: PageTransitionType.fade));
                     },
                     child: const Text("Login",style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'playFair'),)

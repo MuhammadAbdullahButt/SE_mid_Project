@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Member = require('../models//Members');
+const PM = require('../models/PM');
 
 async function createUser(req,res){
     console.log(req.body);
@@ -45,9 +47,19 @@ async function deleteUser(req,res){
     }
 }
 
+async function getAllUsersWithDetails(req,res) {
+    try {
+        const Members = await Member.find();
+        const pm = await PM.find();
+        res.status(200).json([Members,pm]);
+    } catch (err) {
+        res.status(500).json({error: err.message});
+    }
+}
 module.exports={
     createUser,
-    getAllUsers,
+    getAllUsersWithDetails,
     updateUser,
-    deleteUser
+    deleteUser,
+    getAllUsers
 };

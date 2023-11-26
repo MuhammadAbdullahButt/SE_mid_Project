@@ -8,8 +8,6 @@ const PMSchema = mongoose.Schema({
     name: String,
     DOB: String,
     CNIC: String,
-    description: String,
-    skills: String
 },{timestamps: true});
 
 module.exports = mongoose.model('PM',PMSchema)

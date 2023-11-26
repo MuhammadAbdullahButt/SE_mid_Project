@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pms/views/adminFunctionality/projectCrScreen2.dart';
 import 'package:pms/views/adminFunctionality/teamMemversSelect.dart';
 
 class CreateTeam extends StatefulWidget {
@@ -10,6 +8,7 @@ class CreateTeam extends StatefulWidget {
 }
 
 class _CreateTeamState extends State<CreateTeam> {
+  TextEditingController teamNameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +36,7 @@ class _CreateTeamState extends State<CreateTeam> {
                   height: 50,
                 ),
                 TextField(
+                  controller: teamNameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -60,7 +60,7 @@ class _CreateTeamState extends State<CreateTeam> {
                       const Icon(Icons.arrow_forward, color: Colors.white),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return const TeamMembersSelection();
+                          return TeamMembersSelection(teamName: teamNameController.text,);
                         }
                         ));
                       },

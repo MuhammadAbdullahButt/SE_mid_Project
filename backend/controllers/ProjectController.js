@@ -3,12 +3,10 @@ const Project = require('../models/Project');
 async function createProject(req,res){
     console.log(req.body);
     try{
-        console.log('try');
         const project = await Project.create(req.body);
         res.status(201).json(project);
     }
     catch{
-        console.log('bjask');
         res.status(500).json({error: 'error'});
     }
 }
@@ -17,8 +15,6 @@ async function getAllProjects(req,res){
     try{
         const projects = await Project.find();
         res.status(201).json(projects);
-        console.log('getAllProjects called');
-        console.log(projects);
     }
     catch{
         res.status(500).json({error:err.message});

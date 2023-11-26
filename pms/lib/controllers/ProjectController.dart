@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
+import '../configurations.dart';
+
 class ProjectController extends GetxController
 {
   static const apiBaseUrl = 'http://192.168.1.17:3005/';
   static Future<void> addProject(Map projectData) async {
-    var url = Uri.parse('${apiBaseUrl}project/create');
+    var url = Uri.parse('${Configuration.apiBaseUrl}project/create');
     try {
       final response = await http.post(url, body: projectData);
       if (response.statusCode == 200) {
@@ -23,7 +25,7 @@ class ProjectController extends GetxController
 
 
   static  Future<List<Map<String, dynamic>>> getProject() async {
-    var url = Uri.parse('${apiBaseUrl}project/view');
+    var url = Uri.parse('${Configuration.apiBaseUrl}project/view');
     List<Map<String, dynamic>> productList = []; // List of maps
     try {
       final response = await http.get(url);
@@ -31,6 +33,7 @@ class ProjectController extends GetxController
         var productResponse = json.decode(response.body);
         productResponse.forEach((result) {
           productList.add({
+            "id": result['_id'],
             "name": result['name'],
             "type": result['type'],
             "description": result['description'],

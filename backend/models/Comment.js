@@ -1,12 +1,13 @@
 const mongoose = require('mongoose');
 
 const commentSchema = mongoose.Schema({
-    author_id: {
+
+    task_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Member'
+        ref: 'Task'
     },
+    author_name: String,
     text: String,
-    commentedAt: timestamps
 },{timestamps: true});
 
 module.exports = mongoose.model('Comment',commentSchema)

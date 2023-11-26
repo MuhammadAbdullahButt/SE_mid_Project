@@ -6,7 +6,8 @@ async function createComment(req,res){
         const comment = await Comment.create(req.body);
         res.status(201).json(comment);
     }
-    catch{
+    catch(err){
+        console.log(err.message);
         res.status(500).json({error: err.message});
     }
 }

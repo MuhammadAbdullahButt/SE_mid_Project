@@ -49,7 +49,7 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
             ElevatedButton(
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return const TaskCreation();
+                    return TaskCreation(project: project,);
                   }));
 
                 },

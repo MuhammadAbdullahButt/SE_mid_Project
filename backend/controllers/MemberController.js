@@ -11,9 +11,9 @@ async function createMember(req,res){
     }
 }
 
-async function getAllMembers(req,res){
+async function getAllMembersWithDetails(req,res){
     try{
-        const members = await Members.find();
+        const members = await Members.find().populate('user_id').exec();
         res.status(201).json(members);
     }
     catch{
@@ -47,7 +47,7 @@ async function deleteMember(req,res){
 
 module.exports={
     createMember,
-    getAllMembers,
+    getAllMembersWithDetails,
     updateMember,
     deleteMember
 };

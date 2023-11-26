@@ -1,46 +1,19 @@
-import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pms/controllers/SignUpInController.dart';
-import 'package:pms/views/LoginSc.dart';
 
-import '../../controllers/MemberController.dart';
-import '../adminDashboard.dart';
+import '../../controllers/SignUpInController.dart';
+import '../LoginSc.dart';
 
-class PasswordWindow extends StatefulWidget {
+class PMSetPasswordScreen extends StatelessWidget {
   final String name;
-  final String dob;
-  final String cnic;
-  final String skills;
+  final String DOB;
+  final String CNIC;
   final String role;
-  final String description;
-
-
-  const PasswordWindow({
-    Key? key,
-    required this.name,
-    required this.dob,
-    required this.cnic,
-    required this.skills,
-    required this.role,
-    required this.description
-  }) : super(key: key);
-  @override
-  State<PasswordWindow> createState() => _PasswordWindowState(name,dob,cnic,skills,role,description);
-}
-
-class _PasswordWindowState extends State<PasswordWindow> {
-  String name;
-  String dob;
-  String cnic;
-  String skills;
-  String role;
-  String description;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  late String message;
 
-  _PasswordWindowState(this.name, this.dob, this.cnic, this.skills, this.role, this.description);
+  PMSetPasswordScreen({required this.name,required this.DOB,required this.CNIC, required this.role});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,23 +73,21 @@ class _PasswordWindowState extends State<PasswordWindow> {
               Container(
                 child: Material(
                   child: ElevatedButton(
-                      child: Text('Create Account',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.black87,
-                      ),
+                    child: Text('Create Account',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.black87,
+                    ),
                     onPressed: () {
-                        Map Member = {
-                          "name":name,
-                          "DOB": dob,
-                          "CNIC":cnic,
-                          "description":description,
-                          "skills":skills,
-                          "username":usernameController.text,
-                          "password":passwordController.text,
-                          "role":role
-                        };
-                        SignUpInController.addMember(Member);
-                        // send to controller function and it will add in database
+                      Map PM = {
+                        "name":name,
+                        "DOB": DOB,
+                        "CNIC":CNIC,
+                        "username":usernameController.text,
+                        "password":passwordController.text,
+                        "role":role
+                      };
+                      SignUpInController.addPM(PM);
+                      // send to controller function and it will add in database
                       Navigator.push(context, MaterialPageRoute(builder: (context){
                         return const LoginSc();
                       }
@@ -134,4 +105,5 @@ class _PasswordWindowState extends State<PasswordWindow> {
       ),
 
     );
-  }}
+  }
+}

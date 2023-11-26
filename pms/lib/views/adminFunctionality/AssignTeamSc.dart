@@ -1,21 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pms/controllers/MemberController.dart';
-import 'package:pms/controllers/TeamController.dart';
-import 'package:pms/views/adminDashboard.dart';
+import 'package:pms/controllers/TaskController.dart';
+import '../../controllers/TeamController.dart';
+import '../adminDashboard.dart';
 
-class TeamMembersSelection extends StatefulWidget {
-  final String teamName;
-  const TeamMembersSelection({super.key, required this.teamName});
+class AssignTeamSc extends StatefulWidget {
+  final Map Task;
+  const AssignTeamSc({super.key,required this.Task});
+
   @override
-  State<TeamMembersSelection> createState() => _TeamMembersSelectionState(teamName: teamName);
+  State<AssignTeamSc> createState() => _AssignTeamScState(Task);
 }
 
-class _TeamMembersSelectionState extends State<TeamMembersSelection> {
-  final String teamName;
-  _TeamMembersSelectionState({required this.teamName});
+class _AssignTeamScState extends State<AssignTeamSc> {
+  Map Task;
+  _AssignTeamScState(this.Task);
 
-  Set<String> selectedListTiles = <String>{};
+  late String teamName;
+  String selectedTeamId = "";
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +25,14 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Select team members',style: TextStyle(color: Colors.black87,fontFamily: 'playFair'),),
+        title: const Text('Select team',style: TextStyle(color: Colors.black87,fontFamily: 'playFair'),),
       ),
       body: Container(
         color: Colors.white,
         child: Stack(
           children: [
             FutureBuilder<List<Map<String, dynamic>>>(
-              future: MemberController.getMembers(),
+              future: TeamController.getTeams(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Loading indicator while waiting for data
@@ -40,12 +42,12 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   // Data has been received, build the ListView.builder
-                  List<Map<String, dynamic>>? membersList = snapshot.data;
+                  List<Map<String, dynamic>>? teamList = snapshot.data;
 
                   return ListView.builder(
-                    itemCount: membersList?.length,
+                    itemCount: teamList?.length,
                     itemBuilder: (context, index) {
-                      var member = membersList?[index];
+                      var team = teamList?[index];
                       return Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Column(
@@ -54,17 +56,17 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  var userId = membersList?[index]['user_id'];
-                                  selectedListTiles.contains(userId) ? selectedListTiles.remove(userId) : selectedListTiles.add(userId);
+                                  selectedTeamId = teamList?[index]['team_id'] ?? ""; // Update the selected team ID
                                 });
                               },
                               child: Material(
                                 borderRadius: BorderRadius.circular(8),
                                 elevation: 2,
-                                color: selectedListTiles.contains(member?['user_id']) ? Colors.blueAccent : Colors.black87,
+                                color: selectedTeamId == team?['team_id']
+                                    ? Colors.blueAccent
+                                    : Colors.black87,
                                 child: ListTile(
-                                  title: Text(member?['name'] ?? 'No Name', style: TextStyle(color: Colors.white, fontFamily: 'playFair')),
-                                  trailing: Text(member?['role'] ?? 'No Role', style: TextStyle(color: Colors.white, fontFamily: 'playFair')),
+                                  title: Text(team?['title'] ?? "", style: const TextStyle(color: Colors.white, fontFamily: 'playFair')),
                                 ),
                               ),
                             ),
@@ -89,10 +91,20 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                   child:
                   const Icon(Icons.arrow_forward, color: Colors.white),
                   onPressed: () {
-                    TeamController.createTeam(teamName, selectedListTiles);
-                    Navigator.push(context, MaterialPageRoute(builder: (context){
-                      return AdminDashboard();
-                    }));
+                    if (selectedTeamId.isNotEmpty) {
+                      Task['assignedTeam_id'] = selectedTeamId;
+                      TaskController.addTask(Task);
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return const AdminDashboard();
+                      }));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select a team.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),

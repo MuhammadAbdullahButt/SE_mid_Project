@@ -3,20 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:pms/controllers/TaskController.dart';
 import 'package:pms/views/adminDashboard.dart';
 
+import 'AssignTeamSc.dart';
+
 class TaskCreation extends StatefulWidget {
-  const TaskCreation({super.key});
+  final Map project;
+  const TaskCreation({super.key,required this.project});
   @override
-  State<TaskCreation> createState() => _TaskCreationState();
+  State<TaskCreation> createState() => _TaskCreationState(project);
 }
 
 class _TaskCreationState extends State<TaskCreation> {
+  final Map Project;
   Map task = {
+    "Project_id":"",
     "title":"",
     "priority":"",
     "description":"",
     "status":"created",
     "deadline":"",
+    "assignedTeam_id":""
   };
+  _TaskCreationState(this.Project);
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -69,6 +76,7 @@ class _TaskCreationState extends State<TaskCreation> {
                   height: 50,
                 ),
                 TextField(
+                  controller: nameController,
                   decoration: InputDecoration(
                     filled: true,
                     fillColor: Colors.white60,
@@ -83,6 +91,7 @@ class _TaskCreationState extends State<TaskCreation> {
                 Container(
                   height: 80,
                   child: TextField(
+                    controller: descController,
                     textInputAction: TextInputAction.newline,
                     expands: true,
                     maxLines: null,
@@ -155,24 +164,17 @@ class _TaskCreationState extends State<TaskCreation> {
                       child:
                       const Icon(Icons.arrow_forward, color: Colors.white),
                       onPressed: () {
+                        task['Project_id'] = Project['id'];
                         task['title'] = nameController.text;
                         task['description'] = descController.text;
                         task['priority'] = valuechoose;
-                        task['deadline'] = date;
-                        TaskController.addTask(task);
-                        showDialog(context: context, builder: (context){
-                          return AlertDialog(
-                            title: const Text('Task Created Successfully'),
-                            actions: [
-                              TextButton(onPressed: (){
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                  return AdminDashboard();
-                                }));
-                              }, child: Text('Ok')),
-                            ],
-
-                          );
-                        });
+                        task['deadline'] = date.toString();
+                        task['status'] = 'created';
+                        print(task);
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
+                          return AssignTeamSc(Task: task,);
+                        })
+                        );
                       },
                     ),
                   ),

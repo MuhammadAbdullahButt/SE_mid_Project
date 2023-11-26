@@ -8,7 +8,6 @@ const memberSchema = mongoose.Schema({
     name: String,
     DOB: String,
     CNIC: String,
-    role: String,
     description: String,
     skills: String
 },{timestamps: true});

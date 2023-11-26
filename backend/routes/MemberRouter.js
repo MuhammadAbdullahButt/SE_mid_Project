@@ -4,7 +4,7 @@ const memberController = require('../controllers/MemberController');
 
 
 router.post('/create',memberController.createMember);
-router.get('/view',memberController.getAllMembers);
+router.get('/view',memberController.getAllMembersWithDetails);
 router.put('/update/:id',memberController.updateMember);
 router.delete('/delete/:id',memberController.deleteMember);
 

@@ -1,15 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pms/controllers/CommentController.dart';
 
 class TaskDashboard extends StatefulWidget {
-  const TaskDashboard({super.key});
+  final Map task;
+  const TaskDashboard({super.key,required this.task});
   @override
-  State<TaskDashboard> createState() => _TaskDashboardState();
+  State<TaskDashboard> createState() => _TaskDashboardState(task: task);
 }
 
 class _TaskDashboardState extends State<TaskDashboard> {
+  Map task;
+  _TaskDashboardState({required this.task});
   TextEditingController commentController = TextEditingController();
-  // Dummy comments for testing
   List<String> comments = [
     'Great progress!',
     'Keep up the good work!',
@@ -58,6 +60,12 @@ class _TaskDashboardState extends State<TaskDashboard> {
                         onPressed: () {
                           // Add the new comment to the list
                           setState(() {
+                            Map comment = {
+                              "task_id":"0jj08989",
+                              "author_name":"Muhammad Waseem",
+                              "text":commentController.text,
+                            };
+                            CommentController.addComment(comment);
                             comments.add(commentController.text);
                             commentController.clear();
                           });
@@ -88,7 +96,7 @@ class _TaskDashboardState extends State<TaskDashboard> {
           ),
         ),
         iconTheme: IconThemeData(color: Colors.white),
-        title: const Center(child: Text('Sudoku Game',style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
+        title: Center(child: Text(task['title'],style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
       ),
 
       body: Container(
@@ -97,13 +105,13 @@ class _TaskDashboardState extends State<TaskDashboard> {
         child: Column(
           children: [
             const SizedBox(height: 10,),
-            const Text('Deadline: 10-11-2023',style: TextStyle(color: Colors.red,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Deadline: ${task['deadline']}',style: const TextStyle(color: Colors.red,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
-            const Text('Est Cost: 500',style: TextStyle(color: Colors.green,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Priority: '+task['priority'],style: TextStyle(color: Colors.green,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
-            const Text('Status: In progress',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Status: '+task['status'],style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
-            const Text('Assigned Team',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Description: '+task['description'],style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 30,),
             const ListTile(
               leading: Icon(Icons.people),

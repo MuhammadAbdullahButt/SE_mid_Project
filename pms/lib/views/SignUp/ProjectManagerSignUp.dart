@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pms/controllers/SignUpInController.dart';
+import 'package:pms/views/LoginSc.dart';
+import 'package:pms/views/SignUp/personalInfo.dart';
+import 'package:pms/views/SignUp/projectManagerPasswordSc.dart';
 import 'package:pms/views/SignUp/technicalInformation.dart';
 
 import '../adminFunctionality/projectCrScreen2.dart';
-import 'ProjectManagerSignUp.dart';
 
-class PersonalInfo extends StatefulWidget {
-  const PersonalInfo({super.key});
+class PMSignUp extends StatefulWidget {
+  const PMSignUp({super.key});
   @override
-  State<PersonalInfo> createState() => _PersonalInfoState();
+  State<PMSignUp> createState() => _PMState();
 }
 
-class _PersonalInfoState extends State<PersonalInfo> {
+class _PMState extends State<PMSignUp> {
   TextEditingController nameController = TextEditingController();
   TextEditingController DOBController = TextEditingController();
   TextEditingController CNICController = TextEditingController();
@@ -48,8 +51,8 @@ class _PersonalInfoState extends State<PersonalInfo> {
                 height: 93,
                 width: double.infinity,
                 decoration: const BoxDecoration(
-                  color: Colors.black87,
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(50))
+                    color: Colors.black87,
+                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(50))
                 ),
                 child: const Padding(
                   padding: EdgeInsets.only(top: 38,left: 10),
@@ -58,7 +61,7 @@ class _PersonalInfoState extends State<PersonalInfo> {
               ),
               const Padding(
                 padding: EdgeInsets.only(top:45.0),
-                child: Text('Sign Up as a Development Team Member',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold,fontFamily: 'playFairItalic'),),
+                child: Text('Sign Up as a Project Manager',style: TextStyle(fontSize: 26,fontWeight: FontWeight.bold,fontFamily: 'playFairItalic'),),
               ),
               const SizedBox(height: 60,),
               Container(
@@ -118,31 +121,12 @@ class _PersonalInfoState extends State<PersonalInfo> {
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return const PMSignUp();
+                        return PMSetPasswordScreen(name: nameController.text,DOB: DOBController.text,CNIC: CNICController.text,role: 'project manager',);
                       }
                       ));
                     },
-                    child: const Text("Project Manager",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: 'playFair'),)
+                    child: const Text("Next",style: TextStyle(color: Colors.white,fontSize: 13,fontFamily: 'playFair'),)
 
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(left: 230, top: 5),
-                child: Material(
-                  child: FloatingActionButton(
-                    backgroundColor: Colors.black87,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                    ),
-                    child:
-                    const Icon(Icons.arrow_forward, color: Colors.white),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return TechnicalInformation(name: nameController.text,dob: DOBController.text,cnic: CNICController.text,);
-                      }
-                      ));
-                    },
-                  ),
                 ),
               ),
             ],
