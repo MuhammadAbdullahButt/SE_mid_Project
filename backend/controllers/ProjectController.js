@@ -21,6 +21,19 @@ async function getAllProjects(req,res){
     }
 }
 
+
+async function getProjectsByPmId(req, res) {
+    try {
+        const userId = req.params.id;
+        const projects = await Project.find({ pm_id: userId });
+        res.status(201).json(projects);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+
+
 async function updateProject(req, res) {
     try {
         const { id } = req.params;
@@ -49,5 +62,6 @@ module.exports={
     createProject,
     deleteProject,
     updateProject,
-    getAllProjects
+    getAllProjects,
+    getProjectsByPmId
 };

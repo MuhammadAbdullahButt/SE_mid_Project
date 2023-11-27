@@ -7,7 +7,6 @@ import '../configurations.dart';
 
 class SignUpInController {
   static Future<void> addMember(Map member) async {
-    print(member);
     var url = Uri.parse('${Configuration.apiBaseUrl}signup/member');
     try {
       final response = await http.post(url, body: member);
@@ -23,7 +22,6 @@ class SignUpInController {
   }
 
   static Future<void> addPM(Map PM) async {
-    print('add PM called');
     var url = Uri.parse('${Configuration.apiBaseUrl}signup/pm');
     try {
       final response = await http.post(url, body: PM);
@@ -46,8 +44,10 @@ class SignUpInController {
       final response = await http.post(url, body: data);
       if (response.statusCode == 200) {
           var responseData = json.decode(response.body);
+          print(responseData);
           Map userData = responseData['data'];
           userData['role'] = responseData['role'];
+          userData['username'] = responseData['userName'];
           print(userData);
           return userData;
       }

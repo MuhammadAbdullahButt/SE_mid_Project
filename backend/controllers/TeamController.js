@@ -16,12 +16,25 @@ async function createTeam(req,res){
 async function getAllTeams(req,res){
     try{
         const teams = await Team.find();
+        console.log(teams);
         res.status(201).json(teams);
     }
     catch{
         res.status(500).json({error:err.message});
     }
 }
+
+async function getTeamByMemberId(req, res) {
+    try {
+        const { id } = req.params;
+        // Assuming id is the member_id you want to use for filtering
+        const teams = await Team.find({ member_id: id });
+        res.status(200).json(teams);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 
 async function updateTeams(req, res) {
     try {
@@ -51,5 +64,6 @@ module.exports={
     createTeam,
     getAllTeams,
     updateTeams,
-    deleteTeam
+    deleteTeam,
+    getTeamByMemberId
 };

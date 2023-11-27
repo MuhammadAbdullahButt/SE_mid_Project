@@ -4,20 +4,20 @@ import 'package:pms/views/PMDashboard/taskCreation.dart';
 
 import '../../controllers/TaskController.dart';
 
-class ProjectDashboard extends StatefulWidget {
+class PMProjectDashboard extends StatefulWidget {
 
   final Map project;
-  const ProjectDashboard({
+  const PMProjectDashboard({
     Key? key,
     required this.project,
   }) : super(key: key);
   @override
-  State<ProjectDashboard> createState() => _ProjectDashboardState(project);
+  State<PMProjectDashboard> createState() => _PMProjectDashboardState(project);
 }
 
-class _ProjectDashboardState extends State<ProjectDashboard> {
+class _PMProjectDashboardState extends State<PMProjectDashboard> {
   final Map project;
-  _ProjectDashboardState(this.project);
+  _PMProjectDashboardState(this.project);
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +48,18 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
             const SizedBox(height: 10,),
             Text('Status: '+ project['status'],style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
+            ElevatedButton(
+                onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return TaskCreation(project: project,);
+                  }));
+
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black87,
+                ),
+                child: const Text('Create Task',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),)
+            ),
             Expanded(
               child: DefaultTabController(
                 length: 2,

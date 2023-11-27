@@ -5,6 +5,7 @@ import '../configurations.dart';
 
 class TeamController extends GetxController
 {
+
   static Future<void> createTeam(String teamName, Set<String>teamMembers) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}team/create');
     var memberIds = json.encode(teamMembers.toList());
@@ -37,7 +38,6 @@ class TeamController extends GetxController
       final response = await http.get(url);
       if (response.statusCode == 201) {
         List<dynamic> teamResponse = json.decode(response.body);
-        print(teamResponse);
         teamResponse.forEach((result) {
           teamsList.add({
             "team_id":result['_id'],
@@ -51,7 +51,6 @@ class TeamController extends GetxController
     } catch (error) {
       print(error);
     }
-    print(teamsList);
     return teamsList;
   }
 
@@ -74,6 +73,31 @@ class TeamController extends GetxController
     }
     return team;
   }
+
+  static Future<List<Map<String, dynamic>>> getTeamByMemberId(var id) async {
+    var url = Uri.parse('${Configuration.apiBaseUrl}team/getbymember/'+id.toString());
+    List<Map<String, dynamic>> teamsList = []; // List of maps
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        List<dynamic> teamResponse = json.decode(response.body);
+        print(teamResponse);
+        teamResponse.forEach((result) {
+          teamsList.add({
+            "team_id":result['_id'],
+            "title": result['title'],
+            // "member_ids": result['member_id']
+            //     .map((member) => member['_id'])
+            //     .toList(),
+          });
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+    return teamsList;
+  }
+
 
 
 

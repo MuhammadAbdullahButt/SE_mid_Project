@@ -54,6 +54,7 @@ async function Login(req, res) {
                 return res.status(404).json({ error: 'Data not found for project manager' });
             }
             res.status(200).json({
+                userName: username,
                 role: 'project manager',
                 data: pmData
             });
@@ -64,14 +65,14 @@ async function Login(req, res) {
                 return res.status(404).json({ error: 'Data not found for member' });
             }
             res.status(200).json({
-                role: 'not project manager',
+                userName: username,
+                role: user.role,
                 data: memberData
             });
             
     }
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error' });
+        res.status(500).json({ error: error });
     }
 }
 

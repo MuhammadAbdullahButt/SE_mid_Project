@@ -6,24 +6,29 @@ class ProjectCrScreenTwo extends StatefulWidget {
   final String name;
   final String type;
   final DateTime deadline;
+  final String pmId;
   const ProjectCrScreenTwo({
     Key? key,
     required this.name,
     required this.type,
     required this.deadline,
+    required this.pmId
   }) : super(key: key);
   @override
-  State<ProjectCrScreenTwo> createState() => _ProjectCrScreenTwoState(name,type,deadline);
+  State<ProjectCrScreenTwo> createState() => _ProjectCrScreenTwoState(name,type,deadline,pmId);
 }
 
 class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
+  int count = 0;
   String name;
   String type;
   DateTime deadline;
-  _ProjectCrScreenTwoState(this.name, this.type, this.deadline);
+  String pmId;
+  _ProjectCrScreenTwoState(this.name, this.type, this.deadline, this.pmId);
   TextEditingController linkController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   Map project = {
+    "pm_id":"",
     "name":"",
     "type":"",
     "description":"",
@@ -98,6 +103,7 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                   margin: const EdgeInsets.only(left: 0, top: 50),
                   child: ElevatedButton(
                     onPressed: (){
+                      project['pm_id'] = pmId;
                       project['name'] = name;
                       project['type'] = type;
                       project['deadLine'] = deadline.toString();
@@ -109,9 +115,7 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                           title: const Text('Project Created Successfully'),
                           actions: [
                             TextButton(onPressed: (){
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                                return const AdminDashboard();
-                              }));
+                              Navigator.of(context).popUntil((_) => count++ >= 4);
                             }, child: const Text('Ok')),
                           ],
 

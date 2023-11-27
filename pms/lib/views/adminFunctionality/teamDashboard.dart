@@ -36,14 +36,8 @@ class _TeamDashboardState extends State<TeamDashboard> {
         child: const Column(
           children: [
             SizedBox(height: 10,),
-            Text('Deadline:',style: TextStyle(color: Colors.red,fontSize: 17,fontFamily: 'playFair'),),
+            Text('Members',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
             SizedBox(height: 10,),
-            Text('Priority: ',style: TextStyle(color: Colors.green,fontSize: 17,fontFamily: 'playFair'),),
-            SizedBox(height: 10,),
-            Text('Status: ',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
-            SizedBox(height: 10,),
-            Text('Description: ',style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
-            SizedBox(height: 30,),
             ListTile(
               leading: Icon(Icons.people),
               title: Text('Team 1'),

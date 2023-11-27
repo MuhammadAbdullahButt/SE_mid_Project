@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pms/controllers/SignUpInController.dart';
+import 'package:pms/views/MembersFunctionality/MemberDashboard.dart';
+import 'package:pms/views/PMDashboard/ProjectManagerDashboard.dart';
 import 'package:pms/views/SignUp/personalInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -81,8 +83,34 @@ class _LoginScState extends State<LoginSc> {
                         "username":usernameController.text,
                         "password":passwordController.text
                       };
-                      Map currentUserData = await SignUpInController.Login(data);
-                      Navigator.push(context, PageTransition(child: AdminDashboard(), type: PageTransitionType.fade));
+                      SignUpInController.Login(data).then((Map currentUserData) {
+                        print(currentUserData);
+                        if (currentUserData['role'] == "admin") {
+                          Navigator.pushReplacement(context, PageTransition(
+                              child: AdminDashboard(),
+                              type: PageTransitionType.fade));
+                        } else if (currentUserData['role'] == "project manager") {
+                          Navigator.pushReplacement(context, PageTransition(
+                              child: PMDashboard(projectManager: currentUserData,),
+                              type: PageTransitionType.fade));
+                        } else if (currentUserData['role'] == "Developer" || currentUserData['role'] == "Designer" || currentUserData['role'] == "Tester") {
+                          Navigator.pushReplacement(context, PageTransition(
+                              child: MemberDashboard(member:currentUserData),
+                              type: PageTransitionType.fade));
+                        }
+                        else
+                        {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Incorrect username or password'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      }).catchError((error) {
+                        // Handle error, for example, show an error message
+                        print('Error logging in: $error');
+                      });
                     },
                     child: const Text("Login",style: TextStyle(color: Colors.white,fontSize: 20,fontFamily: 'playFair'),)
 

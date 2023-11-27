@@ -1,4 +1,5 @@
 const Task = require('../models/Task');
+const Team = require('../models/Team');
 
 async function createTask(req,res){
     console.log(req.body);
@@ -18,6 +19,18 @@ async function getAllTasks(req,res){
     }
     catch{
         res.status(500).json({error:err.message});
+    }
+}
+
+async function getAllTasksOfMember(req, res) {
+    try {
+        const { id } = req.params;
+        const teams = await Team.find({ member_id: id });
+        const teamIds = teams.map(team => team._id);
+        const tasks = await Task.find({ assignedTeam_id: { $in: teamIds } });
+        res.status(200).json(tasks);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 }
 
@@ -49,5 +62,6 @@ module.exports={
     createTask,
     getAllTasks,
     updateTask,
-    deleteTask
+    deleteTask,
+    getAllTasksOfMember
 };

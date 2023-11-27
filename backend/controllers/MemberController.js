@@ -1,4 +1,5 @@
 const Members = require('../models/Members');
+const PM = require('../models/PM');
 
 async function createMember(req,res){
     console.log(req.body);
@@ -15,6 +16,16 @@ async function getAllMembersWithDetails(req,res){
     try{
         const members = await Members.find().populate('user_id').exec();
         res.status(201).json(members);
+    }
+    catch{
+        res.status(500).json({error:err.message});
+    }
+}
+
+async function getAllPMWithDetails(req,res){
+    try{
+        const pms = await PM.find().populate('user_id').exec();
+        res.status(201).json(pms);
     }
     catch{
         res.status(500).json({error:err.message});
@@ -48,6 +59,7 @@ async function deleteMember(req,res){
 module.exports={
     createMember,
     getAllMembersWithDetails,
+    getAllPMWithDetails,
     updateMember,
     deleteMember
 };

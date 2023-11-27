@@ -2,23 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:pms/controllers/CommentController.dart';
 
 class TaskDashboard extends StatefulWidget {
+  final Map user;
   final Map task;
-  const TaskDashboard({super.key,required this.task});
+  const TaskDashboard({super.key,required this.task,required this.user});
   @override
-  State<TaskDashboard> createState() => _TaskDashboardState(task: task);
+  State<TaskDashboard> createState() => _TaskDashboardState(task: task,user: user);
 }
 
 class _TaskDashboardState extends State<TaskDashboard> {
   Map task;
-  _TaskDashboardState({required this.task});
+  Map user;
+  _TaskDashboardState({required this.task, required this.user});
   TextEditingController commentController = TextEditingController();
-  List<String> comments = [
-    'Great progress!',
-    'Keep up the good work!',
-    'Any challenges you are facing?',
-  ];
 
-  void _showCommentsBottomSheet(BuildContext context) {
+
+  void _showCommentsBottomSheet(BuildContext context,List<Map<String, dynamic>> comments) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -44,11 +42,11 @@ class _TaskDashboardState extends State<TaskDashboard> {
                       itemBuilder: (BuildContext context, int index) {
                         return ListTile(
                           leading: const Icon(Icons.comment),
-                          subtitle: Text(comments[index]),
-                          title: const Text('Muhammad Waseem'),
+                          title: Text(comments[index]['author_name']),
+                          subtitle: Text(comments[index]['text']),
                         );
                       },
-                    ),
+                    )
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -56,17 +54,16 @@ class _TaskDashboardState extends State<TaskDashboard> {
                     decoration: InputDecoration(
                       hintText: 'Add a comment...',
                       suffixIcon: IconButton(
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                         onPressed: () {
                           // Add the new comment to the list
                           setState(() {
                             Map comment = {
-                              "task_id":"0jj08989",
-                              "author_name":"Muhammad Waseem",
+                              "task_id":task['id'],
+                              "author_name":user['name'],
                               "text":commentController.text,
                             };
                             CommentController.addComment(comment);
-                            comments.add(commentController.text);
                             commentController.clear();
                           });
                         },
@@ -119,8 +116,9 @@ class _TaskDashboardState extends State<TaskDashboard> {
             ),
             const SizedBox(height: 30,),
             ElevatedButton(
-                onPressed: (){
-                  _showCommentsBottomSheet(context);
+                onPressed: () async {
+                  List<Map<String, dynamic>> comments = await CommentController.getComments(task['id']);
+                  _showCommentsBottomSheet(context,comments);
                 },
                 child: const Text('View Comments'))
           ],

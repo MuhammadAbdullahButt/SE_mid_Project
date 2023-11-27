@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pms/views/adminFunctionality/projectCrScreen2.dart';
+import 'package:pms/views/adminFunctionality/selectPM.dart';
 
 class ProjectCreation extends StatefulWidget {
   const ProjectCreation({super.key});
@@ -128,7 +129,7 @@ class _ProjectCreationState extends State<ProjectCreation> {
                           const Icon(Icons.arrow_forward, color: Colors.white),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (context){
-                          return ProjectCrScreenTwo(name: nameController.text,type: valuechoose,deadline: date ,);
+                          return SelectPM(name: nameController.text,type: valuechoose,deadline: date ,);
                         }
                         ));
                       },

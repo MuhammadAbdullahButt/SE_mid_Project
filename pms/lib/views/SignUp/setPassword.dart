@@ -39,6 +39,7 @@ class _PasswordWindowState extends State<PasswordWindow> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   late String message;
+  int count = 0;
 
   _PasswordWindowState(this.name, this.dob, this.cnic, this.skills, this.role, this.description);
   @override
@@ -117,10 +118,7 @@ class _PasswordWindowState extends State<PasswordWindow> {
                         };
                         SignUpInController.addMember(Member);
                         // send to controller function and it will add in database
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return const LoginSc();
-                      }
-                      ));
+                        Navigator.of(context).popUntil((_) => count++ >= 3);
                     },
                   ),
                 ),

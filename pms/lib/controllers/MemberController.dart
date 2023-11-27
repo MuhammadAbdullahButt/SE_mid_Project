@@ -30,21 +30,46 @@ class MemberController extends GetxController
       if (response.statusCode == 201) {
         var productResponse = json.decode(response.body);
         productResponse.forEach((result) {
-          membersList.add({
-            "user_id":result['user_id']['_id'],
-            "role":result['user_id']['role'],
-            "name": result['name'],
-            "DOB": result['type'],
-            "CNIC": result['description'],
-            "description": result['cost'],
-            "skills": result['status'],
-          });
+          if(result['user_id']['role'] != 'admin') {
+            membersList.add({
+              "user_id": result['user_id']['_id'],
+              "role": result['user_id']['role'],
+              "name": result['name'],
+              "DOB": result['type'],
+              "CNIC": result['description'],
+              "description": result['cost'],
+              "skills": result['status'],
+            });
+          }
         });
       }
     } catch (error) {
       print(error);
     }
     return membersList;
+  }
+
+  static  Future<List<Map<String, dynamic>>> getProjectManagers() async {
+    var url = Uri.parse('${Configuration.apiBaseUrl}user/pm');
+    List<Map<String, dynamic>> pmList = [];
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 201) {
+        var productResponse = json.decode(response.body);
+        productResponse.forEach((result) {
+            pmList.add({
+              "user_id": result['user_id']['_id'],
+              "role": result['user_id']['role'],
+              "name": result['name'],
+              "DOB": result['type'],
+              "CNIC": result['description'],
+            });
+        });
+      }
+    } catch (error) {
+      print(error);
+    }
+    return pmList;
   }
 
 }

@@ -15,10 +15,9 @@ class AssignTeamSc extends StatefulWidget {
 class _AssignTeamScState extends State<AssignTeamSc> {
   Map Task;
   _AssignTeamScState(this.Task);
-
   late String teamName;
   String selectedTeamId = "";
-
+  int count = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,9 +93,7 @@ class _AssignTeamScState extends State<AssignTeamSc> {
                     if (selectedTeamId.isNotEmpty) {
                       Task['assignedTeam_id'] = selectedTeamId;
                       TaskController.addTask(Task);
-                      Navigator.push(context, MaterialPageRoute(builder: (context){
-                        return const AdminDashboard();
-                      }));
+                      Navigator.of(context).popUntil((_) => count++ >= 2);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

@@ -1,21 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pms/controllers/MemberController.dart';
-import 'package:pms/controllers/TeamController.dart';
-import 'package:pms/views/adminDashboard.dart';
+import 'package:pms/views/adminFunctionality/projectCrScreen2.dart';
+import '../../controllers/MemberController.dart';
+import '../../controllers/TaskController.dart';
+import '../../controllers/TeamController.dart';
 
-class TeamMembersSelection extends StatefulWidget {
-  final String teamName;
-  const TeamMembersSelection({super.key, required this.teamName});
+class SelectPM extends StatefulWidget {
+  final String name;
+  final String type;
+  final DateTime deadline;
+  const SelectPM({
+    Key? key,
+    required this.name,
+    required this.type,
+    required this.deadline,
+  }) : super(key: key);
   @override
-  State<TeamMembersSelection> createState() => _TeamMembersSelectionState(teamName: teamName);
+  State<SelectPM> createState() => _SelectPMState(name,type,deadline);
 }
 
-class _TeamMembersSelectionState extends State<TeamMembersSelection> {
-  final String teamName;
-  _TeamMembersSelectionState({required this.teamName});
-  Set<String> selectedListTiles = <String>{};
-  int count = 0;
+class _SelectPMState extends State<SelectPM> {
+  String name;
+  String type;
+  DateTime deadline;
+  _SelectPMState(this.name, this.type, this.deadline);
+  String selectedTeamId = "";
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +31,14 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: const Text('Select team members',style: TextStyle(color: Colors.black87,fontFamily: 'playFair'),),
+        title: const Text('Select Project Manager',style: TextStyle(color: Colors.black87,fontFamily: 'playFair'),),
       ),
       body: Container(
         color: Colors.white,
         child: Stack(
           children: [
             FutureBuilder<List<Map<String, dynamic>>>(
-              future: MemberController.getMembers(),
+              future: MemberController.getProjectManagers(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   // Loading indicator while waiting for data
@@ -40,12 +48,12 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   // Data has been received, build the ListView.builder
-                  List<Map<String, dynamic>>? membersList = snapshot.data;
+                  List<Map<String, dynamic>>? PMList = snapshot.data;
 
                   return ListView.builder(
-                    itemCount: membersList?.length,
+                    itemCount: PMList?.length,
                     itemBuilder: (context, index) {
-                      var member = membersList?[index];
+                      var pm = PMList?[index];
                       return Padding(
                         padding: EdgeInsets.only(left: 10, right: 10),
                         child: Column(
@@ -54,17 +62,17 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                             GestureDetector(
                               onTap: () {
                                 setState(() {
-                                  var userId = membersList?[index]['user_id'];
-                                  selectedListTiles.contains(userId) ? selectedListTiles.remove(userId) : selectedListTiles.add(userId);
+                                  selectedTeamId = PMList?[index]['user_id'] ?? ""; // Update the selected team ID
                                 });
                               },
                               child: Material(
                                 borderRadius: BorderRadius.circular(8),
                                 elevation: 2,
-                                color: selectedListTiles.contains(member?['user_id']) ? Colors.blueAccent : Colors.black87,
+                                color: selectedTeamId == pm?['user_id']
+                                    ? Colors.blueAccent
+                                    : Colors.black87,
                                 child: ListTile(
-                                  title: Text(member?['name'] ?? 'No Name', style: TextStyle(color: Colors.white, fontFamily: 'playFair')),
-                                  trailing: Text(member?['role'] ?? 'No Role', style: TextStyle(color: Colors.white, fontFamily: 'playFair')),
+                                  title: Text(pm?['name'] ?? "", style: const TextStyle(color: Colors.white, fontFamily: 'playFair')),
                                 ),
                               ),
                             ),
@@ -89,8 +97,20 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                   child:
                   const Icon(Icons.arrow_forward, color: Colors.white),
                   onPressed: () {
-                    TeamController.createTeam(teamName, selectedListTiles);
-                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                    if (selectedTeamId.isNotEmpty) {
+                        Navigator.push(context, MaterialPageRoute(builder: (context){
+                          return ProjectCrScreenTwo(name: name,type: type,deadline: deadline,pmId: selectedTeamId,);
+                        }));
+                     // Task['assignedTeam_id'] = selectedTeamId;
+                     // TaskController.addTask(Task);
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Please select a Project Manager.'),
+                          duration: Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   },
                 ),
               ),
