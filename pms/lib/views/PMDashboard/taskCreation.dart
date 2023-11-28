@@ -6,14 +6,16 @@ import 'package:pms/views/adminDashboard.dart';
 import 'AssignTeamSc.dart';
 
 class TaskCreation extends StatefulWidget {
+  final Map PM;
   final Map project;
-  const TaskCreation({super.key,required this.project});
+  const TaskCreation({super.key,required this.project, required this.PM});
   @override
-  State<TaskCreation> createState() => _TaskCreationState(project);
+  State<TaskCreation> createState() => _TaskCreationState(project,PM);
 }
 
 class _TaskCreationState extends State<TaskCreation> {
   final Map Project;
+  final Map PM;
   Map task = {
     "Project_id":"",
     "title":"",
@@ -23,7 +25,7 @@ class _TaskCreationState extends State<TaskCreation> {
     "deadline":"",
     "assignedTeam_id":""
   };
-  _TaskCreationState(this.Project);
+  _TaskCreationState(this.Project, this.PM);
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descController = TextEditingController();
@@ -172,7 +174,7 @@ class _TaskCreationState extends State<TaskCreation> {
                         task['status'] = 'created';
                         print(task);
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                          return AssignTeamSc(Task: task,);
+                          return AssignTeamSc(Task: task, PM:PM ,);
                         })
                         );
                       },

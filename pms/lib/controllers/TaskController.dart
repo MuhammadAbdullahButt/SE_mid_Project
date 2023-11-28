@@ -106,4 +106,20 @@ class TaskController extends GetxController
     return taskList;
   }
 
+
+  static Future<void> deleteTask(String task_id) async {
+    var url = Uri.parse('${Configuration.apiBaseUrl}task/delete/'+task_id);
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        print('Task deleted successfully');
+        Get.back();
+      } else {
+        print('Failed to delete Task. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error deleting Task: $error');
+    }
+  }
+
 }

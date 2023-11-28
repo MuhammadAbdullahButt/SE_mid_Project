@@ -7,6 +7,7 @@ import '../LoginSc.dart';
 import '../adminFunctionality/taskDashboard.dart';
 import '../adminFunctionality/teamDashboard.dart';
 import 'PMProjectDashboard.dart';
+import 'PMtaskDashboard.dart';
 
 class PMDashboard extends StatefulWidget {
   final Map projectManager;
@@ -133,7 +134,7 @@ class _PMDashboardState extends State<PMDashboard> {
                                             onTap: () {
                                               Navigator.push(context, MaterialPageRoute(
                                                   builder: (context) {
-                                                    return PMProjectDashboard(project: project);
+                                                    return PMProjectDashboard(project: project, PM: projectManager,);
                                                   }));
                                             },
                                             child: Container(
@@ -239,7 +240,7 @@ class _PMDashboardState extends State<PMDashboard> {
                                           onTap: () {
                                             Navigator.push(context, MaterialPageRoute(
                                                 builder: (context) {
-                                                  return TaskDashboard(task: task,user: projectManager,);
+                                                  return PMTaskDashboard(task: task,user: projectManager,);
                                                 }));
                                           },
                                           child: Container(

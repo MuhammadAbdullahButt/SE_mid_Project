@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pms/controllers/CommentController.dart';
 import 'package:pms/controllers/TaskController.dart';
-import 'package:pms/views/adminDashboard.dart';
 
 import '../PMDashboard/ProjectManagerDashboard.dart';
 
-class TaskDashboard extends StatefulWidget {
+class PMTaskDashboard extends StatefulWidget {
   final Map user;
   final Map task;
-  const TaskDashboard({super.key,required this.task,required this.user});
+  const PMTaskDashboard({super.key,required this.task,required this.user});
   @override
-  State<TaskDashboard> createState() => _TaskDashboardState(task: task,user: user);
+  State<PMTaskDashboard> createState() => _TaskDashboardState(task: task,user: user);
 }
 
-class _TaskDashboardState extends State<TaskDashboard> {
+class _TaskDashboardState extends State<PMTaskDashboard> {
   Map task;
   Map user;
   _TaskDashboardState({required this.task, required this.user});
@@ -118,7 +117,7 @@ class _TaskDashboardState extends State<TaskDashboard> {
                 onPressed: (){
                   TaskController.deleteTask(task['id']);
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return AdminDashboard();
+                    return PMDashboard(projectManager: user,);
                   }));
 
                 },

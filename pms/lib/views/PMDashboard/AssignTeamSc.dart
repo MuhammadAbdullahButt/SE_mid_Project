@@ -1,20 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pms/controllers/TaskController.dart';
+import 'package:pms/views/PMDashboard/ProjectManagerDashboard.dart';
 import '../../controllers/TeamController.dart';
 import '../adminDashboard.dart';
 
 class AssignTeamSc extends StatefulWidget {
   final Map Task;
-  const AssignTeamSc({super.key,required this.Task});
+  final Map PM;
+  const AssignTeamSc({super.key,required this.Task, required this.PM});
 
   @override
-  State<AssignTeamSc> createState() => _AssignTeamScState(Task);
+  State<AssignTeamSc> createState() => _AssignTeamScState(Task,PM);
 }
 
 class _AssignTeamScState extends State<AssignTeamSc> {
   Map Task;
-  _AssignTeamScState(this.Task);
+  Map PM;
+  _AssignTeamScState(this.Task,this.PM);
   late String teamName;
   String selectedTeamId = "";
   int count = 0;
@@ -93,7 +96,9 @@ class _AssignTeamScState extends State<AssignTeamSc> {
                     if (selectedTeamId.isNotEmpty) {
                       Task['assignedTeam_id'] = selectedTeamId;
                       TaskController.addTask(Task);
-                      Navigator.of(context).popUntil((_) => count++ >= 2);
+                      Navigator.push(context, MaterialPageRoute(builder: (context){
+                        return PMDashboard(projectManager: PM,);
+                      }));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

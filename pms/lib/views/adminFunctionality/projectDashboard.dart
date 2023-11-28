@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pms/controllers/ProjectController.dart';
 import 'package:pms/views/PMDashboard/taskCreation.dart';
+import 'package:pms/views/adminDashboard.dart';
 
 import '../../controllers/TaskController.dart';
 
@@ -48,9 +50,23 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
             const SizedBox(height: 10,),
             Text('Status: '+ project['status'],style: TextStyle(color: Colors.black87,fontSize: 17,fontFamily: 'playFair'),),
             const SizedBox(height: 10,),
+            ElevatedButton(
+                onPressed: (){
+                  ProjectController.deleteProject(project['id']);
+                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                    return AdminDashboard();
+                  }));
+
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.black87,
+                ),
+                child: const Text('Delete Project',style: TextStyle(color: Colors.white,fontFamily: 'playFair'),)
+            ),
+            const SizedBox(height: 10,),
             Expanded(
               child: DefaultTabController(
-                length: 2,
+                length: 1,
                 child: Scaffold(
                   appBar: AppBar(
                     automaticallyImplyLeading: false,
@@ -59,9 +75,6 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
                       tabs: [
                         Tab(
                           text: 'Current Tasks',
-                        ),
-                        Tab(
-                          text: 'Completed Tasks',
                         ),
                       ],
                     ),
@@ -107,25 +120,6 @@ class _ProjectDashboardState extends State<ProjectDashboard> {
                   ),
                   )
                         ),
-                      Container(
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount: 8,
-                              itemBuilder: (context,index){
-                                return Container(
-                                  margin: EdgeInsets.only(top: 0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: const ListTile(
-                                    title: Text('Task Name'),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
                     ],
                   ),
                 ),

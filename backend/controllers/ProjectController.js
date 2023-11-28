@@ -1,9 +1,26 @@
 const Project = require('../models/Project');
+const Task = require('../models/Task');
+const ProjectAudit = require('../models/ProjectAudit');
 
 async function createProject(req,res){
     console.log(req.body);
     try{
         const project = await Project.create(req.body);
+        const projectAuditData = new ProjectAudit({
+            oldData: {},
+            newData: {
+                pm_id: req.body.pm_id,
+                name: req.body.name,
+                type: req.body.type,
+                description: req.body.description,
+                cost: req.body.cost,
+                status: req.body.status,
+                repoLink: req.body.repoLink,
+                deadLine: req.body.deadLine,
+            },
+            action: 'created',
+        });
+        await projectAuditData.save();
         res.status(201).json(project);
     }
     catch{
@@ -50,7 +67,23 @@ async function updateProject(req, res) {
 async function deleteProject(req,res){
     try{
         const { id } = req.params;
-        await Project.findOneAndRemove({ id: id });
+        await Task.deleteMany({ Project_id: id });
+        const projectt = await Project.findOneAndDelete({ id: id });
+        const projectAuditData = new ProjectAudit({
+            oldData: {
+                pm_id: projectt.pm_id,
+                name: projectt.name,
+                type: projectt.type,
+                description: projectt.description,
+                cost: projectt.cost,
+                status: projectt.status,
+                repoLink: projectt.repoLink,
+                deadLine: projectt.deadLine,
+            },
+            newData: {},
+            action: 'deleted',
+        });
+        await projectAuditData.save();
         res.sendStatus(201);
     }
     catch(err){

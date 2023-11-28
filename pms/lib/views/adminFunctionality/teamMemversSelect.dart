@@ -90,7 +90,9 @@ class _TeamMembersSelectionState extends State<TeamMembersSelection> {
                   const Icon(Icons.arrow_forward, color: Colors.white),
                   onPressed: () {
                     TeamController.createTeam(teamName, selectedListTiles);
-                    Navigator.of(context).popUntil((_) => count++ >= 2);
+                    Navigator.push(context, MaterialPageRoute(builder: (context){
+                      return AdminDashboard();
+                    }));
                   },
                 ),
               ),

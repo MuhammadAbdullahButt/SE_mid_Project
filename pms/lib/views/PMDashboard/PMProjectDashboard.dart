@@ -7,17 +7,20 @@ import '../../controllers/TaskController.dart';
 class PMProjectDashboard extends StatefulWidget {
 
   final Map project;
+  final Map PM;
   const PMProjectDashboard({
     Key? key,
     required this.project,
+    required this.PM,
   }) : super(key: key);
   @override
-  State<PMProjectDashboard> createState() => _PMProjectDashboardState(project);
+  State<PMProjectDashboard> createState() => _PMProjectDashboardState(project,PM);
 }
 
 class _PMProjectDashboardState extends State<PMProjectDashboard> {
   final Map project;
-  _PMProjectDashboardState(this.project);
+  final Map PM;
+  _PMProjectDashboardState(this.project, this.PM);
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +54,7 @@ class _PMProjectDashboardState extends State<PMProjectDashboard> {
             ElevatedButton(
                 onPressed: (){
                   Navigator.push(context, MaterialPageRoute(builder: (context){
-                    return TaskCreation(project: project,);
+                    return TaskCreation(project: project, PM: PM,);
                   }));
 
                 },
@@ -62,7 +65,7 @@ class _PMProjectDashboardState extends State<PMProjectDashboard> {
             ),
             Expanded(
               child: DefaultTabController(
-                length: 2,
+                length: 1,
                 child: Scaffold(
                   appBar: AppBar(
                     automaticallyImplyLeading: false,
@@ -71,9 +74,6 @@ class _PMProjectDashboardState extends State<PMProjectDashboard> {
                       tabs: [
                         Tab(
                           text: 'Current Tasks',
-                        ),
-                        Tab(
-                          text: 'Completed Tasks',
                         ),
                       ],
                     ),
@@ -119,25 +119,6 @@ class _PMProjectDashboardState extends State<PMProjectDashboard> {
                   ),
                   )
                         ),
-                      Container(
-                        child: Expanded(
-                          child: ListView.builder(
-                              itemCount: 8,
-                              itemBuilder: (context,index){
-                                return Container(
-                                  margin: EdgeInsets.only(top: 0),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                    ),
-                                  ),
-                                  child: const ListTile(
-                                    title: Text('Task Name'),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
                     ],
                   ),
                 ),

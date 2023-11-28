@@ -115,7 +115,9 @@ class _ProjectCrScreenTwoState extends State<ProjectCrScreenTwo> {
                           title: const Text('Project Created Successfully'),
                           actions: [
                             TextButton(onPressed: (){
-                              Navigator.of(context).popUntil((_) => count++ >= 4);
+                              Navigator.push(context, MaterialPageRoute(builder: (context){
+                                return AdminDashboard();
+                              }));
                             }, child: const Text('Ok')),
                           ],
 

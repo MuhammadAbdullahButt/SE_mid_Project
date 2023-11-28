@@ -77,4 +77,20 @@ class ProjectController extends GetxController
     return projectList;
   }
 
+  static Future<void> deleteProject(String project_Id) async {
+    var url = Uri.parse('${Configuration.apiBaseUrl}project/delete/'+project_Id);
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        print('Project deleted successfully');
+        Get.back();
+      } else {
+        print('Failed to delete project. Status code: ${response.statusCode}');
+      }
+    } catch (error) {
+      print('Error deleting project: $error');
+    }
+  }
+
+
 }

@@ -1,10 +1,25 @@
 const Task = require('../models/Task');
 const Team = require('../models/Team');
+const TaskAudit = require('../models/TaskAudit');
 
 async function createTask(req,res){
     console.log(req.body);
     try{
         const task = await Task.create(req.body);
+        const taskAuditData = new TaskAudit({
+            oldData: {},
+            newData: {
+                Project_id: req.body.Project_id,
+                title: req.body.title,
+                description: req.body.description,
+                priority: req.body.priority,
+                status: req.body.status,
+                deadLine: req.body.deadLine,
+                assignedTeam_id: req.body.assignedTeam_id,
+            },
+            action: 'created',
+        });
+        await taskAuditData.save();
         res.status(201).json(task);
     }
     catch{
@@ -50,7 +65,21 @@ async function updateTask(req, res) {
 async function deleteTask(req,res){
     try{
         const { id } = req.params;
-        await Task.findOneAndRemove({ id: id });
+        const task = await Task.findOneAndDelete({ _id: id });
+        const taskAuditData = new TaskAudit({
+            oldData: {
+                Project_id: task.Project_id,
+                title: task.title,
+                description: task.description,
+                priority: task.priority,
+                status: task.status,
+                deadLine: task.deadLine,
+                assignedTeam_id: task.assignedTeam_id,
+            },
+            newData: {},
+            action: 'deleted',
+        });
+        await taskAuditData.save();
         res.sendStatus(201);
     }
     catch(err){

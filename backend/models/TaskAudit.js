@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const taskAuditSchema = mongoose.Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
     oldData: {
         Project_id: {
             type: mongoose.Schema.Types.ObjectId,
