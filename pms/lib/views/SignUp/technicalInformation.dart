@@ -21,10 +21,12 @@ class _TechnicalInformationState extends State<TechnicalInformation> {
   String dob;
   String cnic;
 
+  // controllers
   TextEditingController skillController = TextEditingController();
   TextEditingController roleController = TextEditingController();
   TextEditingController descController = TextEditingController();
 
+  // constructor
   _TechnicalInformationState(this.name, this.dob, this.cnic);
   @override
   Widget build(BuildContext context) {

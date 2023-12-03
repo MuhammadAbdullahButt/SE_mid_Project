@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import '../configurations.dart';
 
 class SignUpInController {
+  // this function makes a post req to store a new member
   static Future<void> addMember(Map member) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}signup/member');
     try {
@@ -21,6 +22,7 @@ class SignUpInController {
     }
   }
 
+  // this function makes a post req to store a new project manager
   static Future<void> addPM(Map PM) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}signup/pm');
     try {
@@ -36,7 +38,7 @@ class SignUpInController {
     }
   }
 
-
+  // this function returns the Map of user if the user exists
   static Future<Map> Login(Map data) async {
     Map m = {"error":"error"};
     var url = Uri.parse('${Configuration.apiBaseUrl}login/user');

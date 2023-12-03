@@ -15,10 +15,13 @@ class PMTaskDashboard extends StatefulWidget {
 class _TaskDashboardState extends State<PMTaskDashboard> {
   Map task;
   Map user;
+  // constructor
   _TaskDashboardState({required this.task, required this.user});
+
+  // controller
   TextEditingController commentController = TextEditingController();
 
-
+  // function
   void _showCommentsBottomSheet(BuildContext context,List<Map<String, dynamic>> comments) {
     showModalBottomSheet(
       context: context,
@@ -98,7 +101,6 @@ class _TaskDashboardState extends State<PMTaskDashboard> {
         iconTheme: IconThemeData(color: Colors.white),
         title: Center(child: Text(task['title'],style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
       ),
-
       body: Container(
         width: double.infinity,
         height: double.infinity,

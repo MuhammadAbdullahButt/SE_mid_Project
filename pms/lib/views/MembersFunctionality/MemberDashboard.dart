@@ -1,12 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../controllers/ProjectController.dart';
 import '../../controllers/TaskController.dart';
 import '../../controllers/TeamController.dart';
 import '../LoginSc.dart';
-import '../adminFunctionality/createTeam.dart';
-import '../adminFunctionality/projectCreation.dart';
-import '../adminFunctionality/projectDashboard.dart';
 import '../adminFunctionality/taskDashboard.dart';
 import '../adminFunctionality/teamDashboard.dart';
 
@@ -72,9 +68,11 @@ class _MemberDashboardState extends State<MemberDashboard> {
               leading: const Icon(Icons.logout),
               title: const Text('LogOut'),
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return const LoginSc();
-                }));
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginSc()),
+                      (route) => false, // This predicate ensures that all routes will be removed
+                );
               },
             ),
           ],

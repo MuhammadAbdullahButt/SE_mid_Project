@@ -36,9 +36,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
         actions: [
           Container(
               margin: const EdgeInsets.only(right: 10),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(Icons.person),
+                child: IconButton(onPressed: (){
+                  setState(() {
+                  });
+                }, icon: Icon(Icons.person),),
               ))
         ],
       ),
@@ -89,9 +92,12 @@ class _AdminDashboardState extends State<AdminDashboard> {
               leading: const Icon(Icons.logout),
               title: const Text('LogOut'),
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return const LoginSc();
-                }));
+
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginSc()),
+                      (route) => false, // This predicate ensures that all routes will be removed
+                );
               },
             ),
           ],

@@ -1,11 +1,6 @@
-import 'dart:ffi';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pms/controllers/SignUpInController.dart';
-import 'package:pms/views/LoginSc.dart';
-
-import '../../controllers/MemberController.dart';
-import '../adminDashboard.dart';
 
 class PasswordWindow extends StatefulWidget {
   final String name;
@@ -123,7 +118,6 @@ class _PasswordWindowState extends State<PasswordWindow> {
                   ),
                 ),
               ),
-
 
             ],
           ),

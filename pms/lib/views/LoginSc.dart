@@ -4,9 +4,6 @@ import 'package:pms/controllers/SignUpInController.dart';
 import 'package:pms/views/MembersFunctionality/MemberDashboard.dart';
 import 'package:pms/views/PMDashboard/ProjectManagerDashboard.dart';
 import 'package:pms/views/SignUp/personalInfo.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../controllers/ProjectController.dart';
 import 'adminDashboard.dart';
 
 
@@ -17,6 +14,7 @@ class LoginSc extends StatefulWidget {
 }
 
 class _LoginScState extends State<LoginSc> {
+  // controllers
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   @override

@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:pms/controllers/SignUpInController.dart';
-import 'package:pms/views/LoginSc.dart';
-import 'package:pms/views/SignUp/personalInfo.dart';
 import 'package:pms/views/SignUp/projectManagerPasswordSc.dart';
-import 'package:pms/views/SignUp/technicalInformation.dart';
-
-import '../adminFunctionality/projectCrScreen2.dart';
 
 class PMSignUp extends StatefulWidget {
   const PMSignUp({super.key});
@@ -15,12 +9,15 @@ class PMSignUp extends StatefulWidget {
 }
 
 class _PMState extends State<PMSignUp> {
+
+  //controllers
   TextEditingController nameController = TextEditingController();
   TextEditingController DOBController = TextEditingController();
   TextEditingController CNICController = TextEditingController();
   DateTime? selectedDate;
   @override
 
+  // function
   void _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
       context: context,

@@ -1,7 +1,9 @@
 const Task = require('../models/Task');
 const Team = require('../models/Team');
 const TaskAudit = require('../models/TaskAudit');
+const LogController = require('../controllers/LogController');
 
+// this function will create a task object and also add it in the audit table
 async function createTask(req,res){
     console.log(req.body);
     try{
@@ -22,21 +24,26 @@ async function createTask(req,res){
         await taskAuditData.save();
         res.status(201).json(task);
     }
-    catch{
+    catch(err){
+        LogController.createLog("TaskController.js","createTask",err.message);
         res.status(500).json({error: err.message});
     }
 }
 
+// this function will return all the tasks
 async function getAllTasks(req,res){
     try{
         const tasks = await Task.find();
         res.status(201).json(tasks);
     }
-    catch{
+    catch(err){
+        LogController.createLog("TaskController.js","getAllTasks",err.message);
         res.status(500).json({error:err.message});
     }
 }
 
+// this function will return tasks of a specific member
+// the member will be in a team and the task is assigned to a team
 async function getAllTasksOfMember(req, res) {
     try {
         const { id } = req.params;
@@ -45,10 +52,12 @@ async function getAllTasksOfMember(req, res) {
         const tasks = await Task.find({ assignedTeam_id: { $in: teamIds } });
         res.status(200).json(tasks);
     } catch (err) {
+        LogController.createLog("TaskController.js","getAllTasksOfMember",err.message);
         res.status(500).json({ error: err.message });
     }
 }
 
+// this function will update the task object in database
 async function updateTask(req, res) {
     try {
         const { id } = req.params;
@@ -57,11 +66,13 @@ async function updateTask(req, res) {
         
         res.status(201).json(updatedTask);
     } catch (err) {
+        LogController.createLog("TaskController.js","updateTask",err.message);
         res.status(500).json({ error: err.message });
     }
 }
 
-
+// this function will delete a specfic task after given the id
+// and also add it in the audit table
 async function deleteTask(req,res){
     try{
         const { id } = req.params;
@@ -83,6 +94,7 @@ async function deleteTask(req,res){
         res.sendStatus(201);
     }
     catch(err){
+        LogController.createLog("TaskController.js","deleteTask",err.message);
         res.status(500).json({error: err.message});
     }
 }

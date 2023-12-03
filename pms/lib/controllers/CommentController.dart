@@ -4,9 +4,9 @@ import '../configurations.dart';
 import 'package:http/http.dart' as http;
 
 class CommentController extends GetxController{
-  static const apiBaseUrl = 'http://192.168.1.17:3005/';
-  static Future<void> addComment(Map Comment)
-  async {
+
+  // this function will create a post request to add a comment to a specific task
+  static Future<void> addComment(Map Comment) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}comment/create');
     try {
       final response = await http.post(url, body: Comment);
@@ -21,8 +21,11 @@ class CommentController extends GetxController{
       print(error);
     }
   }
-  static Future<List<Map<String, dynamic>>> getComments(String taskId)
-  async {
+
+
+
+  // this function will return comment list of a specific task
+  static Future<List<Map<String, dynamic>>> getComments(String taskId) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}comment/view');
     List<Map<String, dynamic>> commentList = [];
     try {

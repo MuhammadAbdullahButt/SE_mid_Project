@@ -38,7 +38,6 @@ class _PMProjectDashboardState extends State<PMProjectDashboard> {
         iconTheme: IconThemeData(color: Colors.white),
         title: Center(child: Text(project['name'],style: TextStyle(fontSize: 30,color: Colors.white,fontFamily: 'playFairItalic'),)),
       ),
-
       body: Container(
         width: double.infinity,
         height: double.infinity,

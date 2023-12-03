@@ -9,6 +9,8 @@ const commentRouter = require('./routes/CommentRouter')
 const userRouter = require('./routes/UserRouter')
 
 const app  = express()
+
+//  middlewares
 app.use(bodyParser.json());
 app.use(
     express.urlencoded({
@@ -16,6 +18,8 @@ app.use(
     })
   );
 
+  
+// routes
 app.use('/project',projectRouter);
 app.use('/task',taskRouter);
 app.use('/team',teamRouter);

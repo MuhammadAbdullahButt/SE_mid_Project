@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../controllers/SignUpInController.dart';
 import '../LoginSc.dart';
 
@@ -96,7 +95,6 @@ class PMSetPasswordScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
 
             ],
           ),

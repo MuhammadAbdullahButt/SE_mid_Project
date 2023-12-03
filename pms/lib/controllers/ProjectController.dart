@@ -6,7 +6,7 @@ import '../configurations.dart';
 
 class ProjectController extends GetxController
 {
-  static const apiBaseUrl = 'http://192.168.1.17:3005/';
+  // this function will make a post req to api to create a project object
   static Future<void> addProject(Map projectData) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}project/create');
     try {
@@ -23,7 +23,7 @@ class ProjectController extends GetxController
     }
   }
 
-
+  // this function will make a get req to get all the projects
   static  Future<List<Map<String, dynamic>>> getProject() async {
     var url = Uri.parse('${Configuration.apiBaseUrl}project/view');
     List<Map<String, dynamic>> productList = []; // List of maps
@@ -50,7 +50,7 @@ class ProjectController extends GetxController
     return productList;
   }
 
-
+  // this function will make a get req to get all projects assigned to a project manager
   static  Future<List<Map<String, dynamic>>> getProjectByPmId(String id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}project/getbypmid/'+id);
     List<Map<String, dynamic>> projectList = []; // List of maps
@@ -77,6 +77,7 @@ class ProjectController extends GetxController
     return projectList;
   }
 
+  // this function will make a delete req to delete a specific project and all its tasks and data
   static Future<void> deleteProject(String project_Id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}project/delete/'+project_Id);
     try {

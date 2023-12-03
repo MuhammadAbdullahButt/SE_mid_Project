@@ -5,6 +5,7 @@ import 'package:pms/configurations.dart';
 
 class MemberController extends GetxController
 {
+
   static Future<void> addTask(Map memberData) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}team/create');
     try {
@@ -21,7 +22,7 @@ class MemberController extends GetxController
     }
   }
 
-
+  // this function will return list of Maps of all members
   static  Future<List<Map<String, dynamic>>> getMembers() async {
     var url = Uri.parse('${Configuration.apiBaseUrl}user/members');
     List<Map<String, dynamic>> membersList = []; // List of maps
@@ -49,6 +50,7 @@ class MemberController extends GetxController
     return membersList;
   }
 
+  // this function will return list of Maps of all project manager
   static  Future<List<Map<String, dynamic>>> getProjectManagers() async {
     var url = Uri.parse('${Configuration.apiBaseUrl}user/pm');
     List<Map<String, dynamic>> pmList = [];

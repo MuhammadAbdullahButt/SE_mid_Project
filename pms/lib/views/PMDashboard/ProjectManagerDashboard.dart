@@ -4,7 +4,6 @@ import '../../controllers/ProjectController.dart';
 import '../../controllers/TaskController.dart';
 import '../../controllers/TeamController.dart';
 import '../LoginSc.dart';
-import '../adminFunctionality/taskDashboard.dart';
 import '../adminFunctionality/teamDashboard.dart';
 import 'PMProjectDashboard.dart';
 import 'PMtaskDashboard.dart';
@@ -36,9 +35,12 @@ class _PMDashboardState extends State<PMDashboard> {
         actions: [
           Container(
               margin: const EdgeInsets.only(right: 10),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(Icons.person),
+                child: IconButton(onPressed: (){
+                  setState(() {
+                  });
+                }, icon: Icon(Icons.person),),
               ))
         ],
       ),
@@ -71,9 +73,11 @@ class _PMDashboardState extends State<PMDashboard> {
               leading: const Icon(Icons.logout),
               title: const Text('LogOut'),
               onTap: () {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context){
-                  return const LoginSc();
-                }));
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginSc()),
+                      (route) => false, // This predicate ensures that all routes will be removed
+                );
               },
             ),
           ],

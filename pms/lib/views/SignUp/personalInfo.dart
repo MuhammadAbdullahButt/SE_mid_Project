@@ -12,12 +12,14 @@ class PersonalInfo extends StatefulWidget {
 }
 
 class _PersonalInfoState extends State<PersonalInfo> {
+  // controllers
   TextEditingController nameController = TextEditingController();
   TextEditingController DOBController = TextEditingController();
   TextEditingController CNICController = TextEditingController();
   DateTime? selectedDate;
   @override
 
+  // functions
   void _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
       context: context,

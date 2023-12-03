@@ -5,6 +5,7 @@ import '../configurations.dart';
 
 class TaskController extends GetxController
 {
+  // this function makes a post request to add task
   static Future<void> addTask(Map taskData) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}task/create');
     try {
@@ -21,7 +22,7 @@ class TaskController extends GetxController
     }
   }
 
-
+  // this function makes get req to get all the availabale tasks
   static  Future<List<Map<String, dynamic>>> getTasks() async {
     var url = Uri.parse('${Configuration.apiBaseUrl}task/view');
     List<Map<String, dynamic>> taskList = []; // List of maps
@@ -48,8 +49,8 @@ class TaskController extends GetxController
     return taskList;
   }
 
-
-
+  // this function returns list of tasks assigned to a specific member
+  // team has members and tasks are assigned to teams
   static  Future<List<Map<String, dynamic>>> getTasksByMemberId(var id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}task/gettasksbymember/'+id.toString());
     List<Map<String, dynamic>> taskList = []; // List of maps
@@ -76,8 +77,7 @@ class TaskController extends GetxController
     return taskList;
   }
 
-
-
+  // this function returns all the tasks of a project
   static  Future<List<Map<String, dynamic>>> getTasksbyProjectId(String id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}task/view');
     List<Map<String, dynamic>> taskList = []; // List of maps
@@ -106,7 +106,7 @@ class TaskController extends GetxController
     return taskList;
   }
 
-
+  // this function makes a delete req to delete a specific task
   static Future<void> deleteTask(String task_id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}task/delete/'+task_id);
     try {

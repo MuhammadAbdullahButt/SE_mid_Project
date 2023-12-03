@@ -1,4 +1,7 @@
+
+
 class Configuration
 {
-  static const apiBaseUrl = 'http://192.168.1.11:3005/';
+  // the url of the api
+  static const apiBaseUrl = 'http://192.168.43.199:3005/';
 }

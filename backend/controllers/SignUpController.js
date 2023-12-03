@@ -1,10 +1,11 @@
 const Member = require('../models/Members');
 const projectManager = require('../models/PM');
 const User = require('../models/User');
+const LogController = require('../controllers/LogController');
 
+// this function will creates a user and member object and stores them in to respective tables
+// Member table will contain the user_id
 async function SignUpMember(req, res) {
-    console.log(req.body);
-
     try {
         const { username, password, role } = req.body;
         const user = await User.create({ username, password, role });
@@ -14,12 +15,14 @@ async function SignUpMember(req, res) {
         res.status(201).json(member);
     } 
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error' });
+        LogController.createLog("SignUpController.js","SignUpMember",error.message);
+        res.status(500).json({ error: error.message });
     }
 }
 
 
+// this function will creates a user and project manager object and stores them in to respective tables
+// project manager table will contain the user_id
 async function SignUpPM(req,res){
     try {
         const { username, password, role } = req.body;
@@ -30,14 +33,13 @@ async function SignUpPM(req,res){
         res.status(201).json(PM);
     } 
     catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Error' });
+        LogController.createLog("SignUpController.js","SignUpPM",error.message);
+        res.status(500).json({ error: error.message });
     }
 }
 
-
+// this function will return the object if the user is present
 async function Login(req, res) {
-    console.log('Called');
     try {
         const { username, password } = req.body;
         const user = await User.findOne({ username });
@@ -72,7 +74,8 @@ async function Login(req, res) {
             
     }
     } catch (error) {
-        res.status(500).json({ error: error });
+        LogController.createLog("SignUpController.js","Login",error.message);
+        res.status(500).json({ error: error.message });
     }
 }
 

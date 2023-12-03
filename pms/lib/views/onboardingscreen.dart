@@ -67,9 +67,11 @@ class _onboardingScreenState extends State<onboardingScreen> {
               ),
             ],
           ),
+          //SmoothPageIndicator
           Container(
             alignment: const Alignment(0,0.75),
               child: SmoothPageIndicator(controller: _controller, count: 3)),
+          // Done Button
           Container(
               alignment: const Alignment(0.75,0.75),
               child: GestureDetector(

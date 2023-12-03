@@ -1,34 +1,17 @@
 const mongoose = require('mongoose');
 
 const projectAuditSchema = mongoose.Schema({
+    //Old data refers to the Project Object that is being deleted or updated
     oldData: {
-        pm_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'PM'
-        },
-        name: String,
-        type: String,
-        description: String,
-        cost: String,
-        status: String,
-        repoLink: String,
-        deadLine: String,
+        type: mongoose.Schema.Types.Mixed, 
     },
+    //new data refers to the Project Object that is newly created
     newData: {
-        pm_id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'PM'
-        },
-        name: String,
-        type: String,
-        description: String,
-        cost: String,
-        status: String,
-        repoLink: String,
-        deadLine: String,
-
+        type: mongoose.Schema.Types.Mixed, 
     },
-    action: String
+    //action will be either of created,deleted,updated
+    action: String,
+    createdBy: String
 
 },{timestamps: true});
 

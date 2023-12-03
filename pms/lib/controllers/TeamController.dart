@@ -5,7 +5,7 @@ import '../configurations.dart';
 
 class TeamController extends GetxController
 {
-
+  // this function will make a post req to create a team
   static Future<void> createTeam(String teamName, Set<String>teamMembers) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}team/create');
     var memberIds = json.encode(teamMembers.toList());
@@ -30,7 +30,7 @@ class TeamController extends GetxController
     }
   }
 
-
+  // this function will return List of all the teams
   static Future<List<Map<String, dynamic>>> getTeams() async {
     var url = Uri.parse('${Configuration.apiBaseUrl}team/view');
     List<Map<String, dynamic>> teamsList = []; // List of maps
@@ -54,7 +54,7 @@ class TeamController extends GetxController
     return teamsList;
   }
 
-
+  // this function will return details of a specific team
   static Future<Map> getTeambyId(var id) async {
     Map team = {
       "title": '',
@@ -74,6 +74,8 @@ class TeamController extends GetxController
     return team;
   }
 
+  // this function will return teams in which the member is present
+  // member id is given to this function
   static Future<List<Map<String, dynamic>>> getTeamByMemberId(var id) async {
     var url = Uri.parse('${Configuration.apiBaseUrl}team/getbymember/'+id.toString());
     List<Map<String, dynamic>> teamsList = []; // List of maps
